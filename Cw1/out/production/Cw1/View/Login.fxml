@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10.0" prefHeight="450.0" prefWidth="950.0" vgap="10.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
+   <columnConstraints>
+      <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+      <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+      <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+      <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+      <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+      <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+      <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+   </rowConstraints>
+   <children>
+      <TextField fx:id="textFieldAccountNumber" onAction="#onEnter" GridPane.columnIndex="5" GridPane.rowIndex="6">
+         <font>
+            <Font size="24.0" />
+         </font></TextField>
+      <Label focusTraversable="false" text="Account Number:" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Button fx:id="buttonSignIn" disable="true" mnemonicParsing="false" onAction="#onClick" text="Sign In" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
+      <Label focusTraversable="false" text="Welcome" GridPane.columnIndex="4" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <font>
+            <Font size="96.0" />
+         </font>
+         <effect>
+            <Glow level="0.5" />
+         </effect>
+      </Label>
+   </children>
+</GridPane>
