@@ -1,7 +1,5 @@
 package Controllers;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -94,7 +92,7 @@ public class LoginController implements Initializable {
     public void updateStageOnSuccessfulSignIn() {
         Stage stage = (Stage) buttonSignIn.getScene().getWindow();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("../View/AfterLogin.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Views/AfterLogin.fxml"));
             stage.setScene(new Scene(root, 1000, 600));
         } catch (Exception ex) {
             System.out.println(ex);
