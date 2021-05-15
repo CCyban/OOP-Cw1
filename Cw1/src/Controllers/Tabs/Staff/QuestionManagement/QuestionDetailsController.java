@@ -5,20 +5,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.ParsePosition;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -28,7 +21,7 @@ import static Classes.Quiz.Question.QuestionType.Manual;
 import static Classes.Quiz.Question.QuestionType.Arithmetic;
 import static Classes.Quiz.Question.QuestionType.MultiChoice;
 
-public class AddQuestion implements Initializable {
+public class QuestionDetailsController implements Initializable {
 
     @FXML
     private Button buttonCreateQuestion;
@@ -49,6 +42,8 @@ public class AddQuestion implements Initializable {
     private TextField textFieldTagsInput;
 
     private ObservableList<Question> questionsObservableList;
+    private QuestionManagementController.QuestionDetailsPurpose questionDetailsPurpose;
+    private Question selectedQuestion;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,6 +78,43 @@ public class AddQuestion implements Initializable {
             return c;
         }));
 
+        // Adding a single-line only TextFormatter to the textArea 'Question' input
+        textAreaQuestionInput.setTextFormatter(new TextFormatter<>(c ->
+        {
+            // If the user is trying to make the input empty, let them
+            if ( c.getControlNewText().isEmpty() )
+                return c;
+
+            // If the new length of the text would be more than 1024 characters, then do not allow
+            if (c.getControlNewText().length() > 1024)
+                return null;
+
+            // If the new text contains a new line, do not allow
+            if (c.getControlNewText().contains("\n"))
+                return null;
+
+            // Allows the new text now that it passed the checks
+            return c;
+        }));
+
+        // Applying the same single-line only TextFormatter to the textArea 'Answer' input
+        textAreaAnswerInput.setTextFormatter(new TextFormatter<>(c ->
+        {
+            // If the user is trying to make the input empty, let them
+            if ( c.getControlNewText().isEmpty() )
+                return c;
+
+            // If the new length of the text would be more than 1024 characters, then do not allow
+            if (c.getControlNewText().length() > 1024)
+                return null;
+
+            // If the new text contains a new line, do not allow
+            if (c.getControlNewText().contains("\n"))
+                return null;
+
+            // Allows the new text now that it passed the checks
+            return c;
+        }));
     }
 
     @FXML
@@ -128,13 +160,27 @@ public class AddQuestion implements Initializable {
 
         // Gathering complete
 
-        // Load the gathered inputs into the constructor
-        Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-
-        // Add the new constructed Question to the list
-        questionsObservableList.add(newQuestion);
-
-        System.out.println("Question Added");
+        // Time to do whatever the purpose of this dialog is with the inputted values
+        if (questionDetailsPurpose == QuestionManagementController.QuestionDetailsPurpose.Add) {
+            // Load the gathered inputs into the constructor
+            Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+            // Add the new constructed Question to the list
+            questionsObservableList.add(newQuestion);
+        }
+        else if (questionDetailsPurpose == QuestionManagementController.QuestionDetailsPurpose.Edit) {
+            // Create the updated version of the question
+            Question updatedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+            // Find where the old version is kept in the list
+            int selectedQuestionIndex = questionsObservableList.indexOf(selectedQuestion);
+            // Update the old question with the newly edited question
+            questionsObservableList.set(selectedQuestionIndex, updatedQuestion);
+        }
+        else if (questionDetailsPurpose == QuestionManagementController.QuestionDetailsPurpose.Clone) {     //TODO: Add Cloned question to the same test-bank by default
+            // Create the newly made clone of the question
+            Question newClonedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+            // Add the new constructed cloned question into the list
+            questionsObservableList.add(newClonedQuestion);
+        }
 
         // Closes this dialog now that the question is added
         ((Stage)((Node)(event.getSource())).getScene().getWindow()).close();
@@ -142,6 +188,20 @@ public class AddQuestion implements Initializable {
 
     public void setLocalObservableList(ObservableList<Question> _questionsObservableList) {
         this.questionsObservableList = _questionsObservableList;
+    }
+
+    public void setQuestionDetailsPurpose(QuestionManagementController.QuestionDetailsPurpose _questionDetailsPurpose) {
+        this.questionDetailsPurpose = _questionDetailsPurpose;
+    }
+
+    public void setSelectedQuestion(Question _selectedQuestion) {
+        this.selectedQuestion = _selectedQuestion;
+
+        comboBoxQuestionTypeInput.setValue(selectedQuestion.getQuestionType());
+        textAreaQuestionInput.setText(selectedQuestion.getQuestion());
+        textAreaAnswerInput.setText(selectedQuestion.getCorrectAnswer());
+        textFieldAmountMarksInput.setText(String.valueOf(selectedQuestion.getCorrectMarks()));
+        textFieldTagsInput.setText(selectedQuestion.getTags().toString());
     }
 
     public void showIncompleteFormError() {
