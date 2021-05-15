@@ -5,15 +5,18 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="75.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="600.0" vgap="25.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Tabs.Staff.QuestionManagement.AddQuestion">
+<GridPane hgap="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="900.0" vgap="25.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Tabs.Staff.QuestionManagement.AddQuestion">
 <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="485.0" minWidth="10.0" prefWidth="263.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="10.0" prefWidth="717.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="485.0" minWidth="10.0" prefWidth="218.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="10.0" prefWidth="183.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="10.0" prefWidth="243.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="0.0" prefWidth="73.0" />
 </columnConstraints>
 <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -28,13 +31,13 @@
             <Font size="24.0" />
         </font>
     </Label>
-    <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+    <ComboBox fx:id="comboBoxQuestionTypeInput" prefWidth="150.0" promptText="Select" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
     <Label text="Question:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
         <font>
             <Font size="24.0" />
         </font>
     </Label>
-    <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+    <TextArea fx:id="textAreaQuestionInput" prefHeight="200.0" prefWidth="200.0" promptText="Fill" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
         <font>
             <Font size="18.0" />
         </font>
@@ -44,13 +47,12 @@
             <Font size="24.0" />
         </font>
     </Label>
-    <Label text="Amount of Marks:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+    <Label text="Amount of Marks:" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
         <font>
             <Font size="24.0" />
         </font>
     </Label>
-    <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-    <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+    <TextArea fx:id="textAreaAnswerInput" prefHeight="200.0" prefWidth="200.0" promptText="Fill" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
         <font>
             <Font size="18.0" />
         </font>
@@ -60,8 +62,23 @@
             <Font size="36.0" />
         </font>
     </Button>
+      <TextField fx:id="textFieldAmountMarksInput" promptText="Fill" GridPane.columnIndex="3">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </TextField>
+      <Label text="Tags:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="textAreaTagsInput" prefHeight="200.0" prefWidth="200.0" promptText="Optional" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
 </children>
 <padding>
-    <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    <Insets bottom="25.0" left="50.0" right="50.0" top="25.0" />
 </padding>
 </GridPane>

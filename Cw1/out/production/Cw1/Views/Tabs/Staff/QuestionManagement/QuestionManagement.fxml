@@ -20,7 +20,7 @@
   </rowConstraints>
    <children>
       <TableView fx:id="tableViewQuestions" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" onAction="#onAddNewQuestionClick" text="Add New Question" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+      <Button mnemonicParsing="false" onAction="#onAddNewQuestionClick" text="Add New Question" GridPane.halignment="LEFT">
          <font>
             <Font size="18.0" />
          </font>

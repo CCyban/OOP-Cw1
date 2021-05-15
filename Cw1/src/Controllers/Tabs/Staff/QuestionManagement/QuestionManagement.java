@@ -48,7 +48,7 @@ public class QuestionManagement implements Initializable {
 
         TableColumn idCol = new TableColumn("Id");
         idCol.setCellValueFactory(new PropertyValueFactory<Question, UUID>("questionUUID"));
-        idCol.setMaxWidth(100);
+        idCol.setPrefWidth(100);
 
         TableColumn typeCol = new TableColumn("Type");
         typeCol.setCellValueFactory(new PropertyValueFactory<Question, Question.QuestionType>("questionType"));
@@ -97,6 +97,7 @@ public class QuestionManagement implements Initializable {
 
     @FXML
     public void onAddNewQuestionClick(ActionEvent event) throws IOException {
+        // Stage configurations
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/Tabs/Staff/QuestionManagement/AddQuestion.fxml"));
         Parent parent = fxmlLoader.load();
         AddQuestion dialogController = fxmlLoader.getController();
@@ -105,9 +106,11 @@ public class QuestionManagement implements Initializable {
         Scene scene = new Scene(parent, 900, 500);
         Stage stage = new Stage();
         stage.setResizable(false);
+        stage.setTitle("Add New Question");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
-        stage.setOnHidden(e -> System.out.println("Should Update TableView if haven't already"));
+
+        // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
         stage.showAndWait();
     }
 }
