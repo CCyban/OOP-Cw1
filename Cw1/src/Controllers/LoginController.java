@@ -92,7 +92,7 @@ public class LoginController implements Initializable {
     public void updateStageOnSuccessfulSignIn() {
         Stage stage = (Stage) buttonSignIn.getScene().getWindow();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Views/AfterLogin.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Views/Tabs.fxml"));
             stage.setScene(new Scene(root, 1000, 600));
         } catch (Exception ex) {
             System.out.println(ex);
