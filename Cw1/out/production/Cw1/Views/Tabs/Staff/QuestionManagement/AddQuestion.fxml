@@ -12,72 +12,77 @@
 <?import javafx.scene.text.Font?>
 
 <GridPane hgap="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="900.0" vgap="25.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Tabs.Staff.QuestionManagement.AddQuestion">
-<columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="485.0" minWidth="10.0" prefWidth="218.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="10.0" prefWidth="183.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="10.0" prefWidth="243.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="0.0" prefWidth="73.0" />
-</columnConstraints>
-<rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-</rowConstraints>
-<children>
-    <Label text="Type of Question:" GridPane.halignment="RIGHT">
-        <font>
-            <Font size="24.0" />
-        </font>
-    </Label>
-    <ComboBox fx:id="comboBoxQuestionTypeInput" prefWidth="150.0" promptText="Select" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-    <Label text="Question:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-        <font>
-            <Font size="24.0" />
-        </font>
-    </Label>
-    <TextArea fx:id="textAreaQuestionInput" prefHeight="200.0" prefWidth="200.0" promptText="Fill" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </TextArea>
-    <Label text="Answer:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-        <font>
-            <Font size="24.0" />
-        </font>
-    </Label>
-    <Label text="Amount of Marks:" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-        <font>
-            <Font size="24.0" />
-        </font>
-    </Label>
-    <TextArea fx:id="textAreaAnswerInput" prefHeight="200.0" prefWidth="200.0" promptText="Fill" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
-        <font>
-            <Font size="18.0" />
-        </font>
-    </TextArea>
-    <Button fx:id="buttonCreateQuestion" mnemonicParsing="false" onAction="#onAddNewQuestionClick" text="Create Question" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-        <font>
-            <Font size="36.0" />
-        </font>
-    </Button>
-      <TextField fx:id="textFieldAmountMarksInput" promptText="Fill" GridPane.columnIndex="3">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="485.0" minWidth="10.0" prefWidth="218.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="10.0" prefWidth="185.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="10.0" prefWidth="243.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="723.0" minWidth="0.0" prefWidth="73.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <Label text="Type of Question:" GridPane.halignment="RIGHT">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <ComboBox fx:id="comboBoxQuestionTypeInput" prefWidth="185.0" promptText="Select" style="-fx-font-size: 18;" GridPane.columnIndex="1" />
+        <Label text="Amount of Marks:" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+      <TextField fx:id="textFieldAmountMarksInput" promptText="Fill in" text="5" GridPane.columnIndex="3">
          <font>
-            <Font size="24.0" />
+            <Font size="20.0" />
          </font>
       </TextField>
+        <Label text="Question:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <TextArea fx:id="textAreaQuestionInput" prefHeight="200.0" prefWidth="200.0" promptText="Fill in" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </TextArea>
+        <Label text="Answer:" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <TextArea fx:id="textAreaAnswerInput" prefHeight="200.0" prefWidth="200.0" promptText="Fill in" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </TextArea>
       <Label text="Tags:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TextArea fx:id="textAreaTagsInput" prefHeight="200.0" prefWidth="200.0" promptText="Optional" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
-         <font>
+      <TextField fx:id="textFieldTagsInput" promptText="Optional. Example: Year 2, KS1, Maths" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3">
+        <font>
             <Font size="18.0" />
-         </font>
-      </TextArea>
-</children>
+        </font>
+      </TextField>
+      <Label prefHeight="46.0" prefWidth="106.0" text="*Tags are separated by commas" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="40.0" />
+         </GridPane.margin>
+      </Label>
+      <Button fx:id="buttonCreateQuestion" mnemonicParsing="false" onAction="#onAddNewQuestionClick" text="Create Question" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+        <font>
+            <Font size="36.0" />
+        </font>
+      </Button>
+    </children>
 <padding>
     <Insets bottom="25.0" left="50.0" right="50.0" top="25.0" />
 </padding>

@@ -17,8 +17,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static Classes.Quiz.Question.QuestionType;
 import static Classes.Quiz.Question.QuestionType.Manual;
@@ -41,6 +44,9 @@ public class AddQuestion implements Initializable {
 
     @FXML
     private TextField textFieldAmountMarksInput;
+
+    @FXML
+    private TextField textFieldTagsInput;
 
     private ObservableList<Question> questionsObservableList;
 
@@ -79,21 +85,53 @@ public class AddQuestion implements Initializable {
 
     }
 
-    // Todo: Add a tags control and pass the tags data into the constructor
     @FXML
     public void onAddNewQuestionClick(ActionEvent event) {
 
-        // Gather user inputs
-        QuestionType questionTypeInput = (QuestionType) comboBoxQuestionTypeInput.getValue();
-        String questionInput = textAreaQuestionInput.getText();
-        String answerInput = textAreaAnswerInput.getText();
 
+        // Gathering begins...
+
+        // Gather QuestionType value
+        QuestionType questionTypeInput = (QuestionType) comboBoxQuestionTypeInput.getValue();
+        if (questionTypeInput == null) {
+            showIncompleteFormError();
+            return;
+        }
+
+        // Gather Question value
+        String questionInput = textAreaQuestionInput.getText();
+        if (questionInput.isEmpty()) {
+            showIncompleteFormError();
+            return;
+        }
+        // Gather Answer value
+        String answerInput = textAreaAnswerInput.getText();
+        if (answerInput.isEmpty()) {
+            showIncompleteFormError();
+            return;
+        }
+
+        // Gather Amount of Marks value
+        if (textFieldAmountMarksInput.getLength() == 0) {
+            showIncompleteFormError();
+            return;
+        }
         int amountMarksInput = Integer.parseInt(textFieldAmountMarksInput.getText());
 
-        // Load the inputs into the constructor
-        Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, Collections.<String>emptyList());
 
-        // Add the new Question to the list
+        // Gather a list of Tags
+        List<String> tagsInput = Arrays.stream(textFieldTagsInput.getText().split(","))  // Makes a list with each new element after a comma, then converts it into a stream
+                .map(String::strip)                                                            // Strips whitespace from the stream (means that it only strips the edges of the previous elements)
+                .collect(Collectors.toList());                                                // Converts the stripped stream back into a list
+        System.out.println(tagsInput);
+
+
+        // Gathering complete
+
+        // Load the gathered inputs into the constructor
+        Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+
+        // Add the new constructed Question to the list
         questionsObservableList.add(newQuestion);
 
         System.out.println("Question Added");
@@ -104,5 +142,9 @@ public class AddQuestion implements Initializable {
 
     public void setLocalObservableList(ObservableList<Question> _questionsObservableList) {
         this.questionsObservableList = _questionsObservableList;
+    }
+
+    public void showIncompleteFormError() {
+        new Alert(Alert.AlertType.ERROR, "All required inputs are not filled in").show();
     }
 }

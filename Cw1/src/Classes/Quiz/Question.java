@@ -7,7 +7,6 @@ public class Question {
     public enum QuestionType {MultiChoice , Arithmetic, Manual };
 
     UUID questionUUID;
-
     QuestionType questionType;
     String Question;
     String correctAnswer;
@@ -16,8 +15,10 @@ public class Question {
 
     public Question(String _Question, QuestionType _questionType, String _correctAnswer, int _correctMarks, List<String> _Tags)
     {
+        // Generate a UUID for the question
         questionUUID = UUID.randomUUID();
 
+        // Use payload values
         Question = _Question;
         questionType = _questionType;
         correctAnswer = _correctAnswer;

@@ -53,22 +53,22 @@ public class QuestionManagement implements Initializable {
         TableColumn typeCol = new TableColumn("Type");
         typeCol.setCellValueFactory(new PropertyValueFactory<Question, Question.QuestionType>("questionType"));
 
-        TableColumn questionCol = new TableColumn("Question");
-        questionCol.setCellValueFactory(new PropertyValueFactory<Question, String>("Question"));
-
-        TableColumn correctAnswerCol = new TableColumn("Correct Answer");
-        correctAnswerCol.setCellValueFactory(new PropertyValueFactory<Question, String>("correctAnswer"));
-
         TableColumn correctMarksCol = new TableColumn("Possible Marks");
         correctMarksCol.setCellValueFactory(new PropertyValueFactory<Question, Integer>("CorrectMarks"));
 
         TableColumn tagsCol = new TableColumn("Tags");
         tagsCol.setCellValueFactory(new PropertyValueFactory<Question, List<String>>("Tags"));
 
+        TableColumn questionCol = new TableColumn("Question");
+        questionCol.setCellValueFactory(new PropertyValueFactory<Question, String>("Question"));
+
+        TableColumn correctAnswerCol = new TableColumn("Correct Answer");
+        correctAnswerCol.setCellValueFactory(new PropertyValueFactory<Question, String>("correctAnswer"));
+
 
 
         tableViewQuestions.setItems(questionsObservableList);
-        tableViewQuestions.getColumns().addAll(idCol, typeCol, questionCol, correctAnswerCol, correctMarksCol, tagsCol);
+        tableViewQuestions.getColumns().addAll(idCol, typeCol, correctMarksCol, tagsCol, questionCol, correctAnswerCol);
     }
 
     public void oldAddNewQuestionClick(ActionEvent event) {
