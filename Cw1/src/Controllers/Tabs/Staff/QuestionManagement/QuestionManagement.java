@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -32,6 +33,9 @@ public class QuestionManagement implements Initializable {
     @FXML
     private TableView tableViewQuestions;
 
+    private ObservableList<Question> questionsObservableList = FXCollections.observableArrayList();
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -39,7 +43,7 @@ public class QuestionManagement implements Initializable {
         Question q2 = new Question("What is 1+1? [1, 2, 3, 4]", Question.QuestionType.MultiChoice, "2", 5, Arrays.asList("Year 1", "Maths"));
         Question q3 = new Question("What is 32+23?", Question.QuestionType.Arithmetic, "55", 5, Arrays.asList("Year 3", "Maths"));
 
-        ObservableList<Question> questionsList = FXCollections.observableArrayList(q1, q2, q3);
+        questionsObservableList = FXCollections.observableArrayList(q1, q2, q3);
 
 
         TableColumn idCol = new TableColumn("Id");
@@ -63,12 +67,11 @@ public class QuestionManagement implements Initializable {
 
 
 
-        tableViewQuestions.setItems(questionsList);
+        tableViewQuestions.setItems(questionsObservableList);
         tableViewQuestions.getColumns().addAll(idCol, typeCol, questionCol, correctAnswerCol, correctMarksCol, tagsCol);
     }
 
-    @FXML
-    public void onAddNewQuestionClick(ActionEvent event) {
+    public void oldAddNewQuestionClick(ActionEvent event) {
         Parent root;
         try {
             // Stage configurations
@@ -90,5 +93,21 @@ public class QuestionManagement implements Initializable {
         }
 
 
+    }
+
+    @FXML
+    public void onAddNewQuestionClick(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/Tabs/Staff/QuestionManagement/AddQuestion.fxml"));
+        Parent parent = fxmlLoader.load();
+        AddQuestion dialogController = fxmlLoader.getController();
+        dialogController.setLocalObservableList(questionsObservableList);
+
+        Scene scene = new Scene(parent, 900, 500);
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.setOnHidden(e -> System.out.println("Should Update TableView if haven't already"));
+        stage.showAndWait();
     }
 }
