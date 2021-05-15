@@ -77,7 +77,7 @@
             <Insets left="40.0" />
          </GridPane.margin>
       </Label>
-      <Button fx:id="buttonCreateQuestion" mnemonicParsing="false" onAction="#onAddNewQuestionClick" text="Create Question" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+      <Button fx:id="buttonFinishQuestion" mnemonicParsing="false" onAction="#onFinishQuestionClick" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="4">
         <font>
             <Font size="36.0" />
         </font>

@@ -24,7 +24,7 @@ import static Classes.Quiz.Question.QuestionType.MultiChoice;
 public class QuestionDetailsController implements Initializable {
 
     @FXML
-    private Button buttonCreateQuestion;
+    private Button buttonFinishQuestion;
 
     @FXML
     private ComboBox comboBoxQuestionTypeInput;
@@ -118,7 +118,7 @@ public class QuestionDetailsController implements Initializable {
     }
 
     @FXML
-    public void onAddNewQuestionClick(ActionEvent event) {
+    public void onFinishQuestionClick(ActionEvent event) {
 
 
         // Gathering begins...
@@ -161,25 +161,28 @@ public class QuestionDetailsController implements Initializable {
         // Gathering complete
 
         // Time to do whatever the purpose of this dialog is with the inputted values
-        if (questionDetailsPurpose == QuestionManagementController.QuestionDetailsPurpose.Add) {
-            // Load the gathered inputs into the constructor
-            Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-            // Add the new constructed Question to the list
-            questionsObservableList.add(newQuestion);
-        }
-        else if (questionDetailsPurpose == QuestionManagementController.QuestionDetailsPurpose.Edit) {
-            // Create the updated version of the question
-            Question updatedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-            // Find where the old version is kept in the list
-            int selectedQuestionIndex = questionsObservableList.indexOf(selectedQuestion);
-            // Update the old question with the newly edited question
-            questionsObservableList.set(selectedQuestionIndex, updatedQuestion);
-        }
-        else if (questionDetailsPurpose == QuestionManagementController.QuestionDetailsPurpose.Clone) {     //TODO: Add Cloned question to the same test-bank by default
-            // Create the newly made clone of the question
-            Question newClonedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-            // Add the new constructed cloned question into the list
-            questionsObservableList.add(newClonedQuestion);
+        switch (questionDetailsPurpose) {
+            case Add:
+                // Load the gathered inputs into the constructor
+                Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+                // Add the new constructed Question to the list
+                questionsObservableList.add(newQuestion);
+                break;
+            case Edit:
+                // Create the updated version of the question
+                Question updatedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+                // Find where the old version is kept in the list
+                int selectedQuestionIndex = questionsObservableList.indexOf(selectedQuestion);
+                // Update the old question with the newly edited question
+                questionsObservableList.set(selectedQuestionIndex, updatedQuestion);
+                break;
+            case Clone: //TODO: Add Cloned question to the same test-bank by default (meaning that this isn't a duplicate of the Add case)
+                // Create the newly made clone of the question
+                Question newClonedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+                // Add the new constructed cloned question into the list
+                questionsObservableList.add(newClonedQuestion);
+                break;
+            default: System.out.println("Unknown QuestionDetailPurpose"); break;
         }
 
         // Closes this dialog now that the question is added
@@ -192,6 +195,13 @@ public class QuestionDetailsController implements Initializable {
 
     public void setQuestionDetailsPurpose(QuestionManagementController.QuestionDetailsPurpose _questionDetailsPurpose) {
         this.questionDetailsPurpose = _questionDetailsPurpose;
+
+        switch (questionDetailsPurpose) {
+            case Add: buttonFinishQuestion.setText("Create Question"); break;
+            case Edit: buttonFinishQuestion.setText("Update Question"); break;
+            case Clone: buttonFinishQuestion.setText("Create Cloned Question"); break;
+            default: System.out.println("Unknown QuestionDetailPurpose"); break;
+        }
     }
 
     public void setSelectedQuestion(Question _selectedQuestion) {
@@ -201,7 +211,7 @@ public class QuestionDetailsController implements Initializable {
         textAreaQuestionInput.setText(selectedQuestion.getQuestion());
         textAreaAnswerInput.setText(selectedQuestion.getCorrectAnswer());
         textFieldAmountMarksInput.setText(String.valueOf(selectedQuestion.getCorrectMarks()));
-        textFieldTagsInput.setText(selectedQuestion.getTags().toString());
+        textFieldTagsInput.setText(selectedQuestion.getTags().toString().substring(1, selectedQuestion.getTags().toString().length() - 1)); // Using substring to trim the edges by 1 character each so that the []s are removed
     }
 
     public void showIncompleteFormError() {

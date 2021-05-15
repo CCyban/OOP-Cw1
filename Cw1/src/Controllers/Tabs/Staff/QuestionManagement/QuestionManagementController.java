@@ -9,9 +9,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -26,6 +31,15 @@ public class QuestionManagementController implements Initializable {
 
     @FXML
     private TableView tableViewQuestions;
+
+    @FXML
+    private Button buttonEditSelectedQuestion;
+
+    @FXML
+    private Button buttonCloneSelectedQuestion;
+
+    @FXML
+    private Button buttonRemoveSelectedQuestion;
 
     private ObservableList<Question> questionsObservableList = FXCollections.observableArrayList();
 
@@ -106,13 +120,23 @@ public class QuestionManagementController implements Initializable {
 
     @FXML
     public void onRemoveSelectedQuestionClick(ActionEvent event) {
-        System.out.println("Removed");
+        // If a question is not selected then the action cannot proceed
+        if (tableViewQuestions.getSelectionModel().getSelectedItem() == null) {
+            new Alert(Alert.AlertType.ERROR, "No question is selected with your action").show();
+            return;
+        }
         questionsObservableList.remove(
                 tableViewQuestions.getSelectionModel().getSelectedItem()
         ); // Removes the selected item from the questionsObservableList
     }
 
     public void openQuestionDetails(QuestionDetailsPurpose questionDetailsPurpose) {
+        // If a question is not selected then the action cannot proceed (unless the user is adding an question, which doesn't require any selected question)
+        if (tableViewQuestions.getSelectionModel().getSelectedItem() == null && questionDetailsPurpose != QuestionDetailsPurpose.Add) {
+            new Alert(Alert.AlertType.ERROR, "No question is selected with your action").show();
+            return;
+        }
+
         // Stage configurations
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/Tabs/Staff/QuestionManagement/QuestionDetails.fxml"));
         Parent parent = null;

@@ -31,7 +31,7 @@
                   <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onEditSelectedQuestionClick" prefWidth="182.0" text="Edit Selected Question" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="buttonEditSelectedQuestion" mnemonicParsing="false" onAction="#onEditSelectedQuestionClick" prefWidth="182.0" text="Edit Selected Question" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
@@ -39,7 +39,7 @@
                   <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onCloneSelectedQuestionClick" prefWidth="182.0" text="Clone Selected Question" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="buttonCloneSelectedQuestion" mnemonicParsing="false" onAction="#onCloneSelectedQuestionClick" prefWidth="182.0" text="Clone Selected Question" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
@@ -47,7 +47,7 @@
                   <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                </padding>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onRemoveSelectedQuestionClick" prefWidth="182.0" text="Remove Selected Question" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="buttonRemoveSelectedQuestion" mnemonicParsing="false" onAction="#onRemoveSelectedQuestionClick" prefWidth="182.0" text="Remove Selected Question" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font>
