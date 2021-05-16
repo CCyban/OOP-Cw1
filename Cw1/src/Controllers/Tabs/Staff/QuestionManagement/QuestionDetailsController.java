@@ -17,7 +17,6 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static Classes.Quiz.Question.QuestionType;
-import static Classes.Quiz.Question.QuestionType.Manual;
 import static Classes.Quiz.Question.QuestionType.Arithmetic;
 import static Classes.Quiz.Question.QuestionType.MultiChoice;
 
@@ -50,7 +49,7 @@ public class QuestionDetailsController implements Initializable {
 
         // Inputting the questionTypes into the comboBox, any new types can be added here
         ObservableList<QuestionType> questionTypes = FXCollections.observableArrayList(
-                Arithmetic, MultiChoice, Manual);
+                Arithmetic, MultiChoice);
         comboBoxQuestionTypeInput.setItems(questionTypes);
 
         // Adding a integer-only TextFormatter to the textField 'Amount of Marks' input
@@ -155,7 +154,6 @@ public class QuestionDetailsController implements Initializable {
         List<String> tagsInput = Arrays.stream(textFieldTagsInput.getText().split(","))  // Makes a list with each new element after a comma, then converts it into a stream
                 .map(String::strip)                                                            // Strips whitespace from the stream (means that it only strips the edges of the previous elements)
                 .collect(Collectors.toList());                                                // Converts the stripped stream back into a list
-        System.out.println(tagsInput);
 
 
         // Gathering complete

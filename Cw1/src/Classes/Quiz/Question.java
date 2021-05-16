@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class Question {
-    public enum QuestionType {MultiChoice , Arithmetic, Manual };
+    public enum QuestionType { Arithmetic, MultiChoice };
 
     UUID questionUUID;
     QuestionType questionType;

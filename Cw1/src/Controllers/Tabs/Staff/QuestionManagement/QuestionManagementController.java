@@ -9,37 +9,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class QuestionManagementController implements Initializable {
 
     @FXML
+    private TextField textFieldSearch;
+
+    @FXML
     private TableView tableViewQuestions;
-
-    @FXML
-    private Button buttonEditSelectedQuestion;
-
-    @FXML
-    private Button buttonCloneSelectedQuestion;
-
-    @FXML
-    private Button buttonRemoveSelectedQuestion;
 
     private ObservableList<Question> questionsObservableList = FXCollections.observableArrayList();
 
@@ -48,14 +34,34 @@ public class QuestionManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Listeners
+        textFieldSearch.textProperty().addListener((Observable, oldValue, newValue) -> {
+            // Simply returns true if a tag from a question contains the string from the search (purposely not case-sensitive)
+            Predicate<Question> predicateContainsNonCaseStringOnly = q -> (q.getTags().toString().toUpperCase().contains(textFieldSearch.getText().toUpperCase()));
 
-        Question q1 = new Question("What is one plus one?", Question.QuestionType.Manual, "two", 5, Arrays.asList("Year 1", "Maths"));
+            // TableView now gets the latest version of the filtered ObservableList
+            tableViewQuestions.setItems(questionsObservableList.filtered(predicateContainsNonCaseStringOnly));
+        });
+
+        // Load pre-defined questions into a ObservableList
+        initQuestionsObservableList();
+
+        // Load TableView with its columns & the newly made ObservableList
+        initTableViewQuestions();
+
+    }
+
+    public void initQuestionsObservableList() {
+        Question q1 = new Question("What is 32+23?", Question.QuestionType.Arithmetic, "55", 5, Arrays.asList("Year 3", "Maths"));
         Question q2 = new Question("What is 1+1? [1, 2, 3, 4]", Question.QuestionType.MultiChoice, "2", 5, Arrays.asList("Year 1", "Maths"));
-        Question q3 = new Question("What is 32+23?", Question.QuestionType.Arithmetic, "55", 5, Arrays.asList("Year 3", "Maths"));
 
-        questionsObservableList = FXCollections.observableArrayList(q1, q2, q3);
+        // Load questions from stored data here instead of hardcoded data
 
+        questionsObservableList.addAll(q1, q2);
+    }
 
+    public void initTableViewQuestions() {
+        // Set the TableColumns up for the TableView
         TableColumn idCol = new TableColumn("Id");
         idCol.setCellValueFactory(new PropertyValueFactory<Question, UUID>("questionUUID"));
         idCol.setPrefWidth(100);
@@ -75,32 +81,11 @@ public class QuestionManagementController implements Initializable {
         TableColumn correctAnswerCol = new TableColumn("Correct Answer");
         correctAnswerCol.setCellValueFactory(new PropertyValueFactory<Question, String>("correctAnswer"));
 
-
-
-        tableViewQuestions.setItems(questionsObservableList);
+        // Add the constructed columns to the TableView
         tableViewQuestions.getColumns().addAll(idCol, typeCol, correctMarksCol, tagsCol, questionCol, correctAnswerCol);
-    }
 
-    public void oldAddNewQuestionClick(ActionEvent event) {
-        Parent root;
-        try {
-            // Stage configurations
-            root = FXMLLoader.load(getClass().getResource("/Views/Tabs/Staff/QuestionManagement/QuestionDetails.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Add New Question");
-            stage.setScene(new Scene(root, 1000, 600));
-
-            // Can use this event handler to run a procedure that would update the TableView
-            stage.setOnHidden(e -> System.out.println("Should Update TableView"));
-
-            // Show the child window 'Add New Question'
-            stage.show();
-
-            //((Node)(event.getSource())).getScene().getWindow().hide();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Hook up the observable list with the TableView
+        tableViewQuestions.setItems(questionsObservableList);
     }
 
     @FXML
@@ -176,5 +161,4 @@ public class QuestionManagementController implements Initializable {
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
         stage.showAndWait();
     }
-
 }
