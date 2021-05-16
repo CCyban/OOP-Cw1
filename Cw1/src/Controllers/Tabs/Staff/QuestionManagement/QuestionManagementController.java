@@ -160,5 +160,13 @@ public class QuestionManagementController implements Initializable {
 
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
         stage.showAndWait();
+
+        if (questionDetailsPurpose == questionDetailsPurpose.Edit) {
+            tableViewQuestions.refresh();   // Updates the TableView so it can show the latest version of an edited question
+            // While ObservableList does observe the elements in the list, it doesn't seem to observe the values of one changing, giving cause for this to be used.
+
+            // From the Java docs regarding the usage of the refresh method "This is useful in cases where the underlying data source has changed in a way that is not observed by the ListView itself"
+            // Source - https://docs.oracle.com/javase/9/docs/api/javafx/scene/control/ListView.html
+        }
     }
 }

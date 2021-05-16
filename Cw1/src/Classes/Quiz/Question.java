@@ -26,9 +26,12 @@ public class Question {
         Tags = _Tags;
     }
 
-    public void EditQuestion(int _correctMarks) {
-        // This procedure (maybe) only edits the marks of a question for now
+    public void EditQuestion(String _Question, QuestionType _questionType, String _correctAnswer, int _correctMarks, List<String> _Tags) {
+        Question = _Question;
+        questionType = _questionType;
+        correctAnswer = _correctAnswer;
         correctMarks = _correctMarks;
+        Tags = _Tags;
     }
 
     public UUID getQuestionUUID() {
