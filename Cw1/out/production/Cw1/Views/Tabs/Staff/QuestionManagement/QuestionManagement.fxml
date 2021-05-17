@@ -24,7 +24,7 @@
   </rowConstraints>
    <children>
       <TableView fx:id="tableViewQuestions" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <Button mnemonicParsing="false" onAction="#onAddNewQuestionClick" prefWidth="182.0" text="Add New Question" textAlignment="CENTER" wrapText="true">
                <font>

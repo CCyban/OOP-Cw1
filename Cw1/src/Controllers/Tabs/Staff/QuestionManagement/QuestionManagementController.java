@@ -29,18 +29,20 @@ public class QuestionManagementController implements Initializable {
 
     private ObservableList<Question> questionsObservableList = FXCollections.observableArrayList();
 
-    public enum QuestionDetailsPurpose {Add , Edit, Clone };
+    public enum QuestionDetailsPurpose { Add, Edit, Clone };
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Listeners
         textFieldSearch.textProperty().addListener((Observable, oldValue, newValue) -> {
+
             // Simply returns true if a tag from a question contains the string from the search (purposely not case-sensitive)
             Predicate<Question> predicateContainsNonCaseStringOnly = q -> (q.getTags().toString().toUpperCase().contains(textFieldSearch.getText().toUpperCase()));
 
             // TableView now gets the latest version of the filtered ObservableList
             tableViewQuestions.setItems(questionsObservableList.filtered(predicateContainsNonCaseStringOnly));
+
         });
 
         // Load pre-defined questions into a ObservableList
@@ -143,19 +145,24 @@ public class QuestionManagementController implements Initializable {
         dialogController.setLocalObservableList(questionsObservableList);
 
         // Updating the stage & classes with key details depending on why the dialog is being used
-        if (questionDetailsPurpose == QuestionDetailsPurpose.Add) {
-            stage.setTitle("Add New Question");
-            dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Add);
-        }
-        else if (questionDetailsPurpose == QuestionDetailsPurpose.Edit) {
-            stage.setTitle("Edit Selected Question");
-            dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Edit);
-            dialogController.setSelectedQuestion((Question) tableViewQuestions.getSelectionModel().getSelectedItem());
-        }
-        else if (questionDetailsPurpose == QuestionDetailsPurpose.Clone) {
-            stage.setTitle("Clone Selected Question");
-            dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Clone);
-            dialogController.setSelectedQuestion((Question) tableViewQuestions.getSelectionModel().getSelectedItem());
+        switch (questionDetailsPurpose) {
+            case Add:
+                stage.setTitle("Add New Question");
+                dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Add);
+                break;
+            case Edit:
+                stage.setTitle("Edit Selected Question");
+                dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Edit);
+                dialogController.setSelectedQuestion((Question) tableViewQuestions.getSelectionModel().getSelectedItem());
+                break;
+            case Clone:
+                stage.setTitle("Clone Selected Question");
+                dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Clone);
+                dialogController.setSelectedQuestion((Question) tableViewQuestions.getSelectionModel().getSelectedItem());
+                break;
+            default:
+                System.out.println("questionDetailsPurpose value not recognised");
+                break;
         }
 
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed

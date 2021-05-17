@@ -32,7 +32,13 @@ public class QuestionDetailsController implements Initializable {
     private TextArea textAreaQuestionInput;
 
     @FXML
+    private Label labelQuestionHelpText;
+
+    @FXML
     private TextArea textAreaAnswerInput;
+
+    @FXML
+    private Label labelAnswerHelpText;
 
     @FXML
     private TextField textFieldAmountMarksInput;
@@ -133,7 +139,9 @@ public class QuestionDetailsController implements Initializable {
         switch (questionDetailsPurpose) {
             case Add:
                 buttonFinishQuestion.setText("Create Question");
-                comboBoxQuestionTypeInput.setValue(Arithmetic); // Load the arithmetic question-type by default when adding a question
+                // Must make the user select a question type first
+                textAreaQuestionInput.setDisable(true);
+                textAreaAnswerInput.setDisable(true);
                 break;
             case Edit:
                 buttonFinishQuestion.setText("Update Question");
@@ -231,4 +239,70 @@ public class QuestionDetailsController implements Initializable {
             return c;
         }));
     }
+
+    @FXML
+    public void onQuestionTypeSelect(ActionEvent event) {
+        // If one of the inputs is disabled then, enable them now that a question type is selected
+        if (textAreaQuestionInput.isDisable()) {
+            textAreaQuestionInput.setDisable(false);
+            textAreaAnswerInput.setDisable(false);
+        }
+
+        // Always clear the text inputs when the user selects a question type so the applied TextFilter can work from the start
+        textAreaQuestionInput.clear();
+        textAreaAnswerInput.clear();
+
+        updateUIBasedOnNewQuestionType((QuestionType) comboBoxQuestionTypeInput.getValue());
+    }
+
+    public void updateUIBasedOnNewQuestionType(QuestionType questionType) {
+        switch (questionType) {
+            case Arithmetic:
+                // Set PromptText values
+                labelQuestionHelpText.setText("Example: What is 2+2?");
+                labelAnswerHelpText.setText("Example: 4\nOnly numbers and decimals can be used in the answer due to the question type");
+
+                // Set TextFormatters
+                textAreaAnswerInput.setTextFormatter(new TextFormatter<>(c ->
+                {
+                    // If the user is trying to make the input empty, let them
+                    if (c.getControlNewText().isEmpty()) {
+                        return c;
+                    }
+
+                    // Checking if new character passes as an double
+                    try {
+                        Double.parseDouble(c.getControlNewText());
+                    }
+                    // Means that the new character isn't a double, therefore isn't a valid input which cannot be allowed
+                    catch (NumberFormatException e) {
+                        return null;
+                    }
+
+                    // Allows the new input now that it passed the double-type check
+                    return c;
+                }));
+
+                // End case
+                break;
+
+            case MultiChoice:
+                // Set PromptText
+                labelQuestionHelpText.setText("Example: What is 2+2?    (1, 2, Three, Orange)\nThe choices are a part of the question and are in a pair of () with each choice separated by ,");
+                labelAnswerHelpText.setText("Example: 2");
+
+                // Set TextFormatters
+                if (textAreaAnswerInput.getTextFormatter() != null) {
+                    textAreaAnswerInput.setTextFormatter(null); // Overwrite the preexisting text-formatter
+                }
+
+                // End case
+                break;
+
+            default: System.out.println("questionType value not recognised"); break;
+        }
+    }
 }
+
+
+// TODO: Add validation to see if the user inputted a correct question format with the MultiChoice and that the answer exists within the inputted options. (Would run at the create question button)
