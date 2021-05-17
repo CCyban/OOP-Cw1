@@ -50,12 +50,10 @@ public class TestManagementController implements Initializable {
 
             // TableView now gets the latest version of the filtered ObservableList
             tableViewTests.setItems(testObservableList.filtered(predicateContainsNonCaseStringOnly));
-
         });
 
+        // Load (if any) stored tests into a ObservableList
         loadTestBank(false);
-        // Load pre-defined questions into a ObservableList
-        //initTestsObservableList();
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewTests();

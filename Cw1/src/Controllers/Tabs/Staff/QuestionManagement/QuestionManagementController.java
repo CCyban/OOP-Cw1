@@ -47,13 +47,11 @@ public class QuestionManagementController implements Initializable {
 
         });
 
+        // Load (if any) stored questions into a ObservableList
         loadQuestionBank(false);
-        // Load pre-defined questions into a ObservableList
-        //initQuestionsObservableList();
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewQuestions();
-
     }
 
     public void initQuestionsObservableList() {
