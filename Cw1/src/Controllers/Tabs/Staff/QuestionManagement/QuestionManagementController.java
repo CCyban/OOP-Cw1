@@ -1,6 +1,7 @@
 package Controllers.Tabs.Staff.QuestionManagement;
 
 import Classes.Quiz.Question;
+import Classes.Translating;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Array;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -35,7 +37,7 @@ public class QuestionManagementController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Listeners
-        textFieldSearch.textProperty().addListener((Observable, oldValue, newValue) -> {
+        textFieldSearch.textProperty().addListener((Observable, oldValue, newValue) -> { // TODO: Make it search for a given multiple tags, not just one
 
             // Simply returns true if a tag from a question contains the string from the search (purposely not case-sensitive)
             Predicate<Question> predicateContainsNonCaseStringOnly = q -> (q.getTags().toString().toUpperCase().contains(textFieldSearch.getText().toUpperCase()));
@@ -45,8 +47,9 @@ public class QuestionManagementController implements Initializable {
 
         });
 
+        loadQuestionBank(false);
         // Load pre-defined questions into a ObservableList
-        initQuestionsObservableList();
+        //initQuestionsObservableList();
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewQuestions();
@@ -56,8 +59,6 @@ public class QuestionManagementController implements Initializable {
     public void initQuestionsObservableList() {
         Question q1 = new Question("What is 32+23?", Question.QuestionType.Arithmetic, "55", 5, Arrays.asList("Year 3", "Maths"));
         Question q2 = new Question("What is 1+1? [1, 2, 3, 4]", Question.QuestionType.MultiChoice, "2", 5, Arrays.asList("Year 1", "Maths"));
-
-        // Load questions from stored data here instead of hardcoded data
 
         questionsObservableList.addAll(q1, q2);
     }
@@ -112,6 +113,7 @@ public class QuestionManagementController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "No question is selected with your action").show();
             return;
         }
+
         questionsObservableList.remove(
                 tableViewQuestions.getSelectionModel().getSelectedItem()
         ); // Removes the selected item from the questionsObservableList
@@ -175,5 +177,31 @@ public class QuestionManagementController implements Initializable {
             // From the Java docs regarding the usage of the refresh method "This is useful in cases where the underlying data source has changed in a way that is not observed by the ListView itself"
             // Source - https://docs.oracle.com/javase/9/docs/api/javafx/scene/control/ListView.html
         }
+    }
+
+    @FXML
+    public void onLoadQuestionsClick() {
+        loadQuestionBank(true);
+    }
+
+    @FXML
+    public void onSaveQuestionsClick() {
+        saveQuestionBank(true);
+    }
+
+    // Loads the data into the ObservableList
+    public void loadQuestionBank(Boolean useDialogResult) {
+        // Running an attempt to retrieve the data from the questionBank
+        List retrievedData = Translating.deserialiseList("questionBank.ser", useDialogResult);
+        if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
+            questionsObservableList.clear();
+            questionsObservableList.addAll(retrievedData);
+        }
+    }
+
+    // Saves the data from the ObservableList
+    public void saveQuestionBank(Boolean useDialogResult) {
+        // Sending the data from the ObservableList to be serialised as a questionBank file
+        Translating.serialiseObject(questionsObservableList.stream().toList() ,"questionBank.ser", useDialogResult);
     }
 }

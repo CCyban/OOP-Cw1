@@ -3,7 +3,7 @@ package Classes.Quiz;
 import java.util.List;
 import java.util.UUID;
 
-public class Question {
+public class Question implements java.io.Serializable {
     public enum QuestionType { Arithmetic, MultiChoice };
 
     UUID questionUUID;

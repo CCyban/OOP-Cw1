@@ -2,6 +2,7 @@ package Controllers.Tabs.Staff.TestManagement;
 
 import Classes.Quiz.Question;
 import Classes.Quiz.Test;
+import Classes.Translating;
 import Controllers.Tabs.Staff.QuestionManagement.QuestionDetailsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class TestManagementController implements Initializable {
 
@@ -40,8 +42,20 @@ public class TestManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Listeners
+        textFieldSearch.textProperty().addListener((Observable, oldValue, newValue) -> {
+
+            // Simply returns true if a tag from a question contains the string from the search (purposely not case-sensitive)
+            Predicate<Test> predicateContainsNonCaseStringOnly = q -> (q.getTestTitle().toUpperCase().contains(textFieldSearch.getText().toUpperCase()));
+
+            // TableView now gets the latest version of the filtered ObservableList
+            tableViewTests.setItems(testObservableList.filtered(predicateContainsNonCaseStringOnly));
+
+        });
+
+        loadTestBank(false);
         // Load pre-defined questions into a ObservableList
-        initTestsObservableList();
+        //initTestsObservableList();
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewTests();
@@ -156,5 +170,30 @@ public class TestManagementController implements Initializable {
             // From the Java docs regarding the usage of the refresh method "This is useful in cases where the underlying data source has changed in a way that is not observed by the ListView itself"
             // Source - https://docs.oracle.com/javase/9/docs/api/javafx/scene/control/ListView.html
         }
+    }
+
+    @FXML
+    public void onLoadTestsClick() {
+        loadTestBank(true);
+    }
+
+    @FXML
+    public void onSaveTestsClick() {
+        saveTestBank(true);
+    }
+
+
+    public void loadTestBank(Boolean useDialogResult) {
+        // Running an attempt to retrieve the data from the questionBank
+        List retrievedData = Translating.deserialiseList("testBank.ser", useDialogResult);
+        if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
+            testObservableList.clear();
+            testObservableList.addAll(retrievedData);
+        };
+    }
+
+    public void saveTestBank(Boolean useDialogResult) {
+        // Sending the data from the ObservableList to be serialised as a questionBank file
+        Translating.serialiseObject(testObservableList.stream().toList() ,"testBank.ser", useDialogResult);
     }
 }

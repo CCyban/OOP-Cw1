@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class Test {
+public class Test implements java.io.Serializable {
 
     UUID testUUID;
     String testTitle;
