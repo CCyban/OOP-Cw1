@@ -31,12 +31,10 @@ public class Translating {
         }
         catch(Exception ex)
         {
-            if (useDialogResult) {
-                Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
-                alertSignIn.setTitle("Data");
-                alertSignIn.setHeaderText("Failed to save");
-                alertSignIn.show();
-            }
+            Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
+            alertSignIn.setTitle("Data");
+            alertSignIn.setHeaderText("Failed to save - System Error");
+            alertSignIn.showAndWait();
         }
     }
 
@@ -64,12 +62,10 @@ public class Translating {
         }
         catch(Exception ex)
         {
-            if (useDialogResult) {
-                Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
-                alertSignIn.setTitle("Data");
-                alertSignIn.setHeaderText("Failed to load");
-                alertSignIn.show();
-            }
+            Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
+            alertSignIn.setTitle("Data");
+            alertSignIn.setHeaderText("Failed to load - No data to load or System Error");
+            alertSignIn.showAndWait();
             return null;
         }
     }

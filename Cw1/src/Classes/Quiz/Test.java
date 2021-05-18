@@ -1,6 +1,7 @@
 package Classes.Quiz;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,7 +11,7 @@ public class Test implements java.io.Serializable {
     String testTitle;
     List<Question> Questions;
 
-    public Test(String _testTitle, List<Question> _Questions) {
+    public Test(String _testTitle, LinkedList<Question> _Questions) {
         // Generate a UUID for the test
         testUUID = UUID.randomUUID();
 

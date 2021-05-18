@@ -61,16 +61,16 @@ public class TestManagementController implements Initializable {
 
     public void initTestsObservableList() {
 
-        Question q1 = new Question("What is 32+23?", Question.QuestionType.Arithmetic, "55", 5, Arrays.asList("Year 3", "Maths"));
-        Question q2 = new Question("What is 1+1? [1, 2, 3, 4]", Question.QuestionType.MultiChoice, "2", 5, Arrays.asList("Year 1", "Maths"));
+        //Question q1 = new Question("What is 32+23?", Question.QuestionType.Arithmetic, "55", 5, Arrays.asList("Year 3", "Maths"));
+        //Question q2 = new Question("What is 1+1? [1, 2, 3, 4]", Question.QuestionType.MultiChoice, "2", 5, Arrays.asList("Year 1", "Maths"));
 
-        Test t1 = new Test("End of Year Maths Exam", Arrays.asList(q1, q2));
-        Test t2 = new Test("Summer Maths fun", Arrays.asList(q2));
+        //Test t1 = new Test("End of Year Maths Exam", Arrays.asList(q1, q2));
+        //Test t2 = new Test("Summer Maths fun", Arrays.asList(q2));
 
         // Load tests from stored data here instead of hardcoded data
 
-        System.out.println(t1);
-        testObservableList.addAll(t1, t2);
+        //System.out.println(t1);
+        //testObservableList.addAll(t1, t2);
     }
 
     public void initTableViewTests() {
@@ -82,11 +82,8 @@ public class TestManagementController implements Initializable {
         TableColumn testTitleCol = new TableColumn("Test Title");
         testTitleCol.setCellValueFactory(new PropertyValueFactory<Test, String>("TestTitle"));
 
-        TableColumn questionsCol = new TableColumn("Questions");
-        questionsCol.setCellValueFactory(new PropertyValueFactory<Test, List<Question>>("Questions"));
-
         // Add the constructed columns to the TableView
-        tableViewTests.getColumns().addAll(idCol, testTitleCol, questionsCol);
+        tableViewTests.getColumns().addAll(idCol, testTitleCol);
 
         // Hook up the observable list with the TableView
         tableViewTests.setItems(testObservableList);
@@ -133,7 +130,7 @@ public class TestManagementController implements Initializable {
             System.out.println("Could not find resource");
         }
 
-        Scene scene = new Scene(parent, 900, 500);
+        Scene scene = new Scene(parent, 1200, 700);
         Stage stage = new Stage();
         stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);

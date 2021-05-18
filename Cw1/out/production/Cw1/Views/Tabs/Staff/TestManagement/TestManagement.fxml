@@ -52,7 +52,7 @@
                 </Button>
             </children>
         </VBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" GridPane.rowIndex="2">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="140.0" GridPane.rowIndex="2">
          <children>
             <Button mnemonicParsing="false" onAction="#onSaveTestsClick" text="Save Tests">
                <font>
