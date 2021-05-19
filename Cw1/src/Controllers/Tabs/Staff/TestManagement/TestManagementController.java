@@ -21,10 +21,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class TestManagementController implements Initializable {
@@ -82,8 +79,11 @@ public class TestManagementController implements Initializable {
         TableColumn testTitleCol = new TableColumn("Test Title");
         testTitleCol.setCellValueFactory(new PropertyValueFactory<Test, String>("TestTitle"));
 
+        TableColumn totalMarksCol = new TableColumn("Total Marks");
+        totalMarksCol.setCellValueFactory(new PropertyValueFactory<Test, Integer>("totalMarks"));
+
         // Add the constructed columns to the TableView
-        tableViewTests.getColumns().addAll(idCol, testTitleCol);
+        tableViewTests.getColumns().addAll(idCol, testTitleCol, totalMarksCol);
 
         // Hook up the observable list with the TableView
         tableViewTests.setItems(testObservableList);
@@ -144,6 +144,9 @@ public class TestManagementController implements Initializable {
             case Add:
                 stage.setTitle("Add New Test");
                 dialogController.setTestDetailsPurpose(TestDetailsPurpose.Add);
+                Test newTest = new Test("", new ArrayList<>());
+                testObservableList.add(newTest);
+                dialogController.setSelectedTest(newTest);
                 break;
             case Edit:
                 stage.setTitle("Edit Selected Test");
@@ -158,13 +161,16 @@ public class TestManagementController implements Initializable {
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
         stage.showAndWait();
 
-        if (testDetailsPurpose == testDetailsPurpose.Edit) {
-            tableViewTests.refresh();   // Updates the TableView so it can show the latest version of an edited test
+        //if (testDetailsPurpose == testDetailsPurpose.Edit) {
+        //    tableViewTests.refresh();   // Updates the TableView so it can show the latest version of an edited test
             // While ObservableList does observe the elements in the list, it doesn't seem to observe the values of one changing, giving cause for this to be used.
 
             // From the Java docs regarding the usage of the refresh method "This is useful in cases where the underlying data source has changed in a way that is not observed by the ListView itself"
             // Source - https://docs.oracle.com/javase/9/docs/api/javafx/scene/control/ListView.html
-        }
+        //}
+
+        tableViewTests.refresh();   // Updates the TableView so it can show the latest version of an edited test
+
     }
 
     @FXML

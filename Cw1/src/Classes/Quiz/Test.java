@@ -1,17 +1,15 @@
 package Classes.Quiz;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Test implements java.io.Serializable {
 
     UUID testUUID;
     String testTitle;
-    List<Question> Questions;
+    ArrayList<Question> Questions;
 
-    public Test(String _testTitle, LinkedList<Question> _Questions) {
+    public Test(String _testTitle, ArrayList<Question> _Questions) {
         // Generate a UUID for the test
         testUUID = UUID.randomUUID();
 
@@ -46,5 +44,13 @@ public class Test implements java.io.Serializable {
 
     public List<Question> searchQuestionsByTag(String search) { // Todo: A possible task
         return Collections.EMPTY_LIST;
+    }
+
+    public int getTotalMarks() {
+        int totalMarks = 0;
+        for (Question question: Questions) {
+            totalMarks += question.getCorrectMarks();
+        }
+        return totalMarks;
     }
 }

@@ -12,9 +12,11 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class TestDetailsController implements Initializable {
 
@@ -30,6 +32,13 @@ public class TestDetailsController implements Initializable {
     @FXML
     private TableView tableViewTestQuestions;
 
+
+    @FXML
+    private TextField textFieldQuestionBankSearchInput;
+
+    @FXML
+    private TextField textFieldTestQuestionsSearchInput;
+
     @FXML
     private Label labelTotalTestMarks;
 
@@ -43,6 +52,27 @@ public class TestDetailsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Listeners
+        textFieldQuestionBankSearchInput.textProperty().addListener((Observable, oldValue, newValue) -> { // TODO: Make it search for a given multiple tags, not just one
+
+            // Simply returns true if a tag from a question contains the string from the search (purposely not case-sensitive)
+            Predicate<Question> predicateContainsNonCaseStringOnly = q -> (q.getTags().toString().toUpperCase().contains(textFieldQuestionBankSearchInput.getText().toUpperCase()));
+
+            // TableView now gets the latest version of the filtered ObservableList
+            tableViewQuestionBank.setItems(questionBankObservableList.filtered(predicateContainsNonCaseStringOnly));
+
+        });
+        textFieldTestQuestionsSearchInput.textProperty().addListener((Observable, oldValue, newValue) -> { // TODO: Make it search for a given multiple tags, not just one
+
+            // Simply returns true if a tag from a question contains the string from the search (purposely not case-sensitive)
+            Predicate<Question> predicateContainsNonCaseStringOnly = q -> (q.getTags().toString().toUpperCase().contains(textFieldTestQuestionsSearchInput.getText().toUpperCase()));
+
+            // TableView now gets the latest version of the filtered ObservableList
+            tableViewTestQuestions.setItems(testQuestionsObservableList.filtered(predicateContainsNonCaseStringOnly));
+
+        });
+
+
 
         // Loads (if any) stored questions into a ObservableList
         loadQuestionBank(false);
@@ -70,9 +100,9 @@ public class TestDetailsController implements Initializable {
         switch (testDetailsPurpose) {
             case Add:
                 // Load the gathered inputs into the constructor
-                Test newTest = new Test(testTitleInput, new LinkedList<>(testQuestionsObservableList));
+                //Test newTest = new Test(testTitleInput, testQuestionsObservableList.stream().toList());
                 // Add the new constructed Test to the list
-                testObservableList.add(newTest);
+                selectedTest.setTestTitle(testTitleInput);
                 break;
             case Edit:
                 selectedTest.setTestTitle(testTitleInput);
@@ -102,10 +132,12 @@ public class TestDetailsController implements Initializable {
     public void setSelectedTest(Test _selectedTest) {
         this.selectedTest = _selectedTest;
 
-        this.testQuestionsObservableList = FXCollections.observableList(selectedTest.getQuestions());
+        this.testQuestionsObservableList = FXCollections.observableArrayList(selectedTest.getQuestions());
+
+        textFieldTestTitleInput.setText(selectedTest.getTestTitle());
 
         tableViewTestQuestions.setItems(testQuestionsObservableList);
-        textFieldTestTitleInput.setText(selectedTest.getTestTitle());
+        labelTotalTestMarks.setText(String.valueOf(selectedTest.getTotalMarks()));
     }
 
     public void showIncompleteFormError() {
@@ -179,7 +211,18 @@ public class TestDetailsController implements Initializable {
 
     @FXML
     public void onAddToTestClick(ActionEvent event) {
-        testQuestionsObservableList.add((Question) tableViewQuestionBank.getSelectionModel().getSelectedItem());
+        // Adds the question to the test
+        selectedTest.addQuestion((Question) tableViewQuestionBank.getSelectionModel().getSelectedItem());
+        // Refreshes data/table TODO FOR Cw2: Make it automatic
+        testQuestionsObservableList = FXCollections.observableArrayList(selectedTest.getQuestions());
+        tableViewTestQuestions.setItems(FXCollections.observableArrayList(selectedTest.getQuestions()));
+
+        // Clear search now that the list has changed
+        textFieldTestQuestionsSearchInput.setText("");
+        tableViewTestQuestions.getSelectionModel().clearSelection();
+
+        // Update total marks label TODO: Bind it
+        labelTotalTestMarks.setText(String.valueOf(selectedTest.getTotalMarks()));
     }
 
     @FXML
@@ -190,10 +233,17 @@ public class TestDetailsController implements Initializable {
             return;
         }
 
-        testQuestionsObservableList.remove( (Question)
-                tableViewTestQuestions.getSelectionModel().getSelectedItem()
-        ); // Removes the selected item from the testQuestionsObservableList
+        // Removes the question from the test
+        selectedTest.removeQuestion((Question) tableViewTestQuestions.getSelectionModel().getSelectedItem());
+        // Refreshes data/table TODO FOR Cw2: Make it automatic
+        testQuestionsObservableList = FXCollections.observableArrayList(selectedTest.getQuestions());
+        tableViewTestQuestions.setItems(FXCollections.observableArrayList(selectedTest.getQuestions()));
 
-        //selectedTest.removeQuestion((Question) tableViewTestQuestions.getSelectionModel().getSelectedItem());
+        // Clear search & selection now that the list has changed
+        textFieldTestQuestionsSearchInput.setText("");
+        tableViewTestQuestions.getSelectionModel().clearSelection();
+
+        // Update total marks label TODO: Bind it
+        labelTotalTestMarks.setText(String.valueOf(selectedTest.getTotalMarks()));
     }
 }
