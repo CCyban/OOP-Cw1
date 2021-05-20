@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         //Configuring properties
-        Parent root = FXMLLoader.load(getClass().getResource("/Views/Login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Views/Initial/Login.fxml"));
         primaryStage.setTitle("Cw1");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 1000, 600));
