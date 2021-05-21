@@ -3,7 +3,7 @@ package Classes.Quiz;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Result {
+public class Result implements java.io.Serializable {
     UUID resultUUID;
     UUID testUUID;
     ArrayList<Answer> resultData;

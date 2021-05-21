@@ -57,7 +57,7 @@
       </HBox>
       <ScrollPane hbarPolicy="NEVER" vbarPolicy="ALWAYS" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <content>
-            <Accordion fx:id="accordionTestQuestions" minWidth="-Infinity" prefWidth="1075.0">
+            <Accordion fx:id="accordionTestQuestions" minWidth="-Infinity" prefWidth="1075.0" style="-fx-font-size: 24px;">
 
             </Accordion>
 

@@ -2,7 +2,7 @@ package Classes.Quiz;
 
 import java.util.UUID;
 
-public class Answer {
+public class Answer implements java.io.Serializable {
     UUID questionUUID;
     int marksAchieved;
     String givenAnswer;
