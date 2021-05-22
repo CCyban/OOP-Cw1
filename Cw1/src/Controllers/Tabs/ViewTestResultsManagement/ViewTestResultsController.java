@@ -1,8 +1,8 @@
 package Controllers.Tabs.ViewTestResultsManagement;
 
+import Classes.Banks;
 import Classes.Quiz.Result;
 import Classes.Quiz.Test;
-import Classes.Translating;
 import Controllers.Tabs.DoTestManagement.DoTestDetailsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,11 +22,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
 public class ViewTestResultsController implements Initializable {
@@ -38,7 +35,7 @@ public class ViewTestResultsController implements Initializable {
 
     private ObservableList<Result> resultsObservableList = FXCollections.observableArrayList();
 
-    private ArrayList<Test> testsList = new ArrayList();
+    private ObservableList<Test> testsObservableList = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,7 +50,7 @@ public class ViewTestResultsController implements Initializable {
         });
 
         // Load (if any) stored tests into a ObservableList
-        loadResultBank(false);
+        Banks.loadResultBank(false, resultsObservableList);
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewResults();
@@ -116,9 +113,9 @@ public class ViewTestResultsController implements Initializable {
         Result result = (Result) tableViewResults.getSelectionModel().getSelectedItem();
         UUID testUUID = result.getTestUUID();
 
-        loadTestBank(false);
+        Banks.loadTestBank(false, testsObservableList);
 
-        Test selectedTest = testsList.stream()
+        Test selectedTest = testsObservableList.stream()
                 .filter(test -> testUUID.equals(test.getTestUUID()))
                 .findFirst()
                 .orElse(null);
@@ -138,21 +135,11 @@ public class ViewTestResultsController implements Initializable {
         // Source - https://docs.oracle.com/javase/9/docs/api/javafx/scene/control/ListView.html
     }
 
-    // Loads the data into the ObservableList
-    public void loadTestBank(Boolean useDialogResult) {
-        // Running an attempt to retrieve the data from the questionBank
-        List retrievedData = Translating.deserialiseList("testBank.ser", useDialogResult);
-        if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
-            testsList.clear();
-            testsList.addAll(retrievedData);
-        }
-    }
-
     @FXML
     public void onRemoveSelectedResultClick(ActionEvent event) {
         // If a question is not selected then the action cannot proceed
         if (tableViewResults.getSelectionModel().getSelectedItem() == null) {
-            new Alert(Alert.AlertType.ERROR, "No question is selected with your action").show();
+            new Alert(Alert.AlertType.ERROR, "No test is selected with your action").show();
             return;
         }
         resultsObservableList.remove(
@@ -162,26 +149,11 @@ public class ViewTestResultsController implements Initializable {
 
     @FXML
     public void onLoadResultsClick(ActionEvent event) {
-        loadResultBank(true);
+        Banks.loadResultBank(true, resultsObservableList);
     }
 
     @FXML
     public void onSaveResultsClick(ActionEvent event) {
-        saveResultBank(true);
-    }
-
-    // Loads the data into the ObservableList
-    public void loadResultBank(Boolean useDialogResult) {
-        // Running an attempt to retrieve the data from the questionBank
-        List retrievedData = Translating.deserialiseList("resultBank.ser", useDialogResult);
-        if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
-            resultsObservableList.clear();
-            resultsObservableList.addAll(retrievedData);
-        }
-    }
-
-    // Sending the data from the ObservableList to be serialised as a resultBank file
-    public void saveResultBank(Boolean useDialogResult) {
-        Translating.serialiseObject(resultsObservableList.stream().toList() ,"resultBank.ser", useDialogResult);
+        Banks.saveResultBank(true, resultsObservableList);
     }
 }

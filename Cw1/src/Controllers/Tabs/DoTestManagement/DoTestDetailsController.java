@@ -1,5 +1,6 @@
 package Controllers.Tabs.DoTestManagement;
 
+import Classes.Banks;
 import Classes.Quiz.Answer;
 import Classes.Quiz.Question;
 import Classes.Quiz.Result;
@@ -46,11 +47,6 @@ public class DoTestDetailsController implements Initializable {
     }
 
     public void onFinishTestClick(ActionEvent event) {
-        System.out.println("clicked");
-
-        //TODO: Create and store result here
-
-
         ArrayList<Answer> arrayListAnswers = new ArrayList<Answer>();
 
         for (int index = 0; index < givenAnswerControlsArrayList.size(); index++) {
@@ -85,8 +81,7 @@ public class DoTestDetailsController implements Initializable {
             }
         }
 
-        result = new Result(selectedTest.getTestUUID(), arrayListAnswers);
-        saveResultBank(true);
+        Banks.updateResultBank(true, new Result(selectedTest.getTestUUID(), arrayListAnswers));
 
         // Closes this dialog now that the result is added
         ((Stage)((Node)(event.getSource())).getScene().getWindow()).close();
@@ -176,21 +171,6 @@ public class DoTestDetailsController implements Initializable {
 
 
         labelTotalTestMarks.setText(String.valueOf(selectedTest.getTotalMarks()));
-    }
-
-    public void saveResultBank(Boolean useDialogResult) {
-        List<Result> resultsList = new ArrayList<>();   // Creation of empty result bank
-
-        // Running an attempt to retrieve the data from the resultBank
-        List retrievedData = Translating.deserialiseList("resultBank.ser", useDialogResult);
-        if (retrievedData != null) {
-            resultsList.addAll(retrievedData);  // Gets the current up to date result bank
-        }
-
-        resultsList.add(result); // Add result to the result bank
-
-        // Sending the list data to be serialised as a resultBank file
-        Translating.serialiseObject(resultsList, "resultBank.ser", useDialogResult);
     }
 
     public void setSelectedResult(Result _selectedResult) {

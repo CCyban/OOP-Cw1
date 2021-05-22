@@ -33,7 +33,7 @@
                   <Insets />
                </VBox.margin>
                <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                </padding>
             </Button>
             <Button mnemonicParsing="false" onAction="#onRemoveSelectedResultClick" prefWidth="182.0" text="Remove Selected Result" textAlignment="CENTER" wrapText="true">
@@ -41,7 +41,7 @@
                   <Font size="18.0" />
                </font>
                <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                </padding>
             </Button>
          </children>

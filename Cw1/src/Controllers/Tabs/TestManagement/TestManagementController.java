@@ -1,5 +1,6 @@
 package Controllers.Tabs.TestManagement;
 
+import Classes.Banks;
 import Classes.Quiz.Test;
 import Classes.Translating;
 import javafx.collections.FXCollections;
@@ -30,7 +31,7 @@ public class TestManagementController implements Initializable {
     @FXML
     private TableView tableViewTests;
 
-    private ObservableList<Test> testObservableList = FXCollections.observableArrayList();
+    private ObservableList<Test> testsObservableList = FXCollections.observableArrayList();
 
     public enum TestDetailsPurpose { Add, Edit };
 
@@ -44,11 +45,11 @@ public class TestManagementController implements Initializable {
             Predicate<Test> predicateContainsNonCaseStringOnly = q -> (q.getTestTitle().toUpperCase().contains(textFieldSearch.getText().toUpperCase()));
 
             // TableView now gets the latest version of the filtered ObservableList
-            tableViewTests.setItems(testObservableList.filtered(predicateContainsNonCaseStringOnly));
+            tableViewTests.setItems(testsObservableList.filtered(predicateContainsNonCaseStringOnly));
         });
 
         // Load (if any) stored tests into a ObservableList
-        loadTestBank(false);
+        Banks.loadTestBank(false, testsObservableList);
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewTests();
@@ -84,7 +85,7 @@ public class TestManagementController implements Initializable {
         tableViewTests.getColumns().addAll(idCol, testTitleCol, totalMarksCol);
 
         // Hook up the observable list with the TableView
-        tableViewTests.setItems(testObservableList);
+        tableViewTests.setItems(testsObservableList);
     }
 
     @FXML
@@ -101,10 +102,10 @@ public class TestManagementController implements Initializable {
     public void onRemoveSelectedTestClick(ActionEvent event) {
         // If a question is not selected then the action cannot proceed
         if (tableViewTests.getSelectionModel().getSelectedItem() == null) {
-            new Alert(Alert.AlertType.ERROR, "No question is selected with your action").show();
+            new Alert(Alert.AlertType.ERROR, "No test is selected with your action").show();
             return;
         }
-        testObservableList.remove(
+        testsObservableList.remove(
                 tableViewTests.getSelectionModel().getSelectedItem()
         ); // Removes the selected item from the questionsObservableList
     }
@@ -135,7 +136,7 @@ public class TestManagementController implements Initializable {
         stage.setScene(scene);
 
         TestDetailsController dialogController = fxmlLoader.getController();
-        dialogController.setLocalObservableList(testObservableList);
+        dialogController.setLocalObservableList(testsObservableList);
 
         // Updating the stage & classes with key details depending on why the dialog is being used
         switch (testDetailsPurpose) {
@@ -143,7 +144,7 @@ public class TestManagementController implements Initializable {
                 stage.setTitle("Add New Test");
                 dialogController.setTestDetailsPurpose(TestDetailsPurpose.Add);
                 Test newTest = new Test("", new ArrayList<>());
-                testObservableList.add(newTest);
+                testsObservableList.add(newTest);
                 dialogController.setSelectedTest(newTest);
 
                 // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
@@ -151,7 +152,7 @@ public class TestManagementController implements Initializable {
 
                 // If the user didn't finish adding the test, remove it
                 if (newTest.getTestTitle() == "") {
-                    testObservableList.remove(newTest);
+                    testsObservableList.remove(newTest);
                 }
                 break;
             case Edit:
@@ -175,26 +176,11 @@ public class TestManagementController implements Initializable {
 
     @FXML
     public void onLoadTestsClick() {
-        loadTestBank(true);
+        Banks.loadTestBank(true, testsObservableList);
     }
 
     @FXML
     public void onSaveTestsClick() {
-        saveTestBank(true);
-    }
-
-
-    public void loadTestBank(Boolean useDialogResult) {
-        // Running an attempt to retrieve the data from the questionBank
-        List retrievedData = Translating.deserialiseList("testBank.ser", useDialogResult);
-        if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
-            testObservableList.clear();
-            testObservableList.addAll(retrievedData);
-        };
-    }
-
-    public void saveTestBank(Boolean useDialogResult) {
-        // Sending the data from the ObservableList to be serialised as a questionBank file
-        Translating.serialiseObject(testObservableList.stream().toList() ,"testBank.ser", useDialogResult);
+        Banks.saveTestBank(true, testsObservableList);
     }
 }

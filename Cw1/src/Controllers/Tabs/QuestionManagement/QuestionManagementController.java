@@ -1,5 +1,6 @@
 package Controllers.Tabs.QuestionManagement;
 
+import Classes.Banks;
 import Classes.Quiz.Question;
 import Classes.Translating;
 import javafx.collections.FXCollections;
@@ -47,7 +48,7 @@ public class QuestionManagementController implements Initializable {
         });
 
         // Load (if any) stored questions into a ObservableList
-        loadQuestionBank(false);
+        Banks.loadQuestionBank(false, questionsObservableList);
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewQuestions();
@@ -178,27 +179,11 @@ public class QuestionManagementController implements Initializable {
 
     @FXML
     public void onLoadQuestionsClick() {
-        loadQuestionBank(true);
+        Banks.loadQuestionBank(true, questionsObservableList);
     }
 
     @FXML
     public void onSaveQuestionsClick() {
-        saveQuestionBank(true);
-    }
-
-    // Loads the data into the ObservableList
-    public void loadQuestionBank(Boolean useDialogResult) {
-        // Running an attempt to retrieve the data from the questionBank
-        List retrievedData = Translating.deserialiseList("questionBank.ser", useDialogResult);
-        if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
-            questionsObservableList.clear();
-            questionsObservableList.addAll(retrievedData);
-        }
-    }
-
-    // Saves the data from the ObservableList
-    public void saveQuestionBank(Boolean useDialogResult) {
-        // Sending the data from the ObservableList to be serialised as a questionBank file
-        Translating.serialiseObject(questionsObservableList.stream().toList() ,"questionBank.ser", useDialogResult);
+        Banks.saveQuestionBank(true, questionsObservableList);
     }
 }

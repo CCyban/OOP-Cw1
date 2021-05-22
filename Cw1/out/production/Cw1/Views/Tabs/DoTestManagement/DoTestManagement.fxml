@@ -27,8 +27,11 @@
          <children>
             <Button mnemonicParsing="false" onAction="#onStartSelectedTestClick" prefWidth="182.0" text="Start Selected Test" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font size="24.0" />
+                  <Font size="18.0" />
                </font>
+               <padding>
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+               </padding>
             </Button>
          </children>
       </VBox>

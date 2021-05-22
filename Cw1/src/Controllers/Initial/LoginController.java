@@ -1,5 +1,6 @@
 package Controllers.Initial;
 
+import Classes.Translating;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -47,6 +49,8 @@ public class LoginController implements Initializable {
             else
                 setCanSignIn(true);
         });
+
+        //GenerateBanksIfUnfound();
     }
 
     @FXML
