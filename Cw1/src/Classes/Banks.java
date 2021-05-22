@@ -55,10 +55,10 @@ public class Banks {
 
     // Updating the data in the resultBank file if any
     public static void updateResultBank(Boolean useDialogResult, Result newResultToSave) {
-        ObservableList<Result> resultsList = FXCollections.observableArrayList();   // Creation of empty result bank
+        List<Result> resultsList = new ArrayList<>();   // Creation of empty result bank
 
         // Running an attempt to retrieve the data from the resultBank
-        loadResultBank(false, resultsList);
+        loadResultBank(false, FXCollections.observableList(resultsList));
 
         resultsList.add(newResultToSave); // Add result to the result bank
 
