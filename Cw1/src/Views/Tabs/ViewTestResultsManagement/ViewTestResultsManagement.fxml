@@ -27,8 +27,22 @@
          <children>
             <Button mnemonicParsing="false" onAction="#onEditSelectedResultClick" prefWidth="182.0" text="Edit Selected Result" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font size="24.0" />
+                  <Font size="18.0" />
                </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onRemoveSelectedResultClick" prefWidth="182.0" text="Remove Selected Result" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
             </Button>
          </children>
       </VBox>
@@ -50,6 +64,20 @@
          </GridPane.margin>
       </HBox>
       <TableView fx:id="tableViewResults" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" GridPane.rowIndex="2">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onSaveResultsClick" text="Save Results">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onLoadResultsClick" text="Load Results">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

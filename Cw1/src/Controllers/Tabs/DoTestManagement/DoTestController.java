@@ -137,4 +137,10 @@ public class DoTestController implements Initializable {
         // Source - https://docs.oracle.com/javase/9/docs/api/javafx/scene/control/ListView.html
     }
 
+
+    @FXML
+    public void onLoadLatestTestsClick() {
+        loadTestBank(true);
+    }
+
 }

@@ -28,4 +28,12 @@ public class Result implements java.io.Serializable {
     public ArrayList<Answer> getResultData() {
         return resultData;
     }
+
+    public int getTotalMarksAchieved() {
+        int totalMarksAchieved = 0;
+        for (Answer answer: resultData) {
+            totalMarksAchieved += answer.marksAchieved;
+        }
+        return totalMarksAchieved;
+    }
 }

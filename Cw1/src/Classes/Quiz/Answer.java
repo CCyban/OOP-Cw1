@@ -12,4 +12,8 @@ public class Answer implements java.io.Serializable {
         marksAchieved = _marksAchieved;
         givenAnswer = _givenAnswer;
     }
+
+    public String getGivenAnswer() {
+        return givenAnswer;
+    }
 }

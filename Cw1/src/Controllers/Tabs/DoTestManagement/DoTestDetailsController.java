@@ -5,31 +5,26 @@ import Classes.Quiz.Question;
 import Classes.Quiz.Result;
 import Classes.Quiz.Test;
 import Classes.Translating;
-import com.sun.javafx.scene.shape.ArcHelper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static Classes.Quiz.Question.QuestionType.Arithmetic;
-
 public class DoTestDetailsController implements Initializable {
 
     private Test selectedTest;
+
+    private Result selectedResult;
 
     private List<Question> testQuestions;
 
@@ -42,7 +37,7 @@ public class DoTestDetailsController implements Initializable {
     @FXML
     private Accordion accordionTestQuestions;
 
-    private ArrayList<Object> arrayListGivenAnswers = new ArrayList<>();
+    private ArrayList<Object> givenAnswerControlsArrayList = new ArrayList<>();
 
     private Result result;
 
@@ -58,9 +53,9 @@ public class DoTestDetailsController implements Initializable {
 
         ArrayList<Answer> arrayListAnswers = new ArrayList<Answer>();
 
-        for (int index = 0; index < arrayListGivenAnswers.size(); index++) {
+        for (int index = 0; index < givenAnswerControlsArrayList.size(); index++) {
             Question question = testQuestions.get(index);
-            Object answer = arrayListGivenAnswers.get(index);
+            Object answer = givenAnswerControlsArrayList.get(index);
             int marksAchieved = 0;
             if (answer.getClass() == ToggleGroup.class) {
 
@@ -121,7 +116,9 @@ public class DoTestDetailsController implements Initializable {
 
                     // Done so we can keep track of the answers
                     TextField textFieldQuestion = new TextField();
-                    arrayListGivenAnswers.add(textFieldQuestion);
+                    givenAnswerControlsArrayList.add(textFieldQuestion);
+                    System.out.println("added");
+
 
                     // Creating and adding the answer HBox to the question VBox
                     HBox hbox = new HBox();
@@ -154,7 +151,8 @@ public class DoTestDetailsController implements Initializable {
                     ToggleGroup toggleGroupQuestion = new ToggleGroup();
 
                     // Done so we can keep track of the answers
-                    arrayListGivenAnswers.add(toggleGroupQuestion);
+                    givenAnswerControlsArrayList.add(toggleGroupQuestion);
+                    System.out.println("added");
 
 
                     // Now showing the other subsection - the options part
@@ -194,4 +192,33 @@ public class DoTestDetailsController implements Initializable {
         // Sending the list data to be serialised as a resultBank file
         Translating.serialiseObject(resultsList, "resultBank.ser", useDialogResult);
     }
+
+    public void setSelectedResult(Result _selectedResult) {
+        this.selectedResult = _selectedResult;
+        ArrayList givenAnswersArrayList = selectedResult.getResultData();
+
+        for (int index = 0; index < givenAnswersArrayList.size(); index++) {
+
+            Object indexAnswerControl = givenAnswerControlsArrayList.get(index);
+            String indexAnswer = ((Answer)givenAnswersArrayList.get(index)).getGivenAnswer();
+
+            if (indexAnswerControl.getClass() == ToggleGroup.class) {
+
+                // Set the result's chosen radio button to be selected
+                ToggleGroup tg = ((ToggleGroup)indexAnswerControl);
+
+                Toggle correctToggle = tg.getToggles().stream()
+                        .filter(Toggle -> indexAnswer.equals(((RadioButton)Toggle).getText()))
+                        .findFirst()
+                        .orElse(null);
+                correctToggle.setSelected(true);
+            }
+            else if (indexAnswerControl.getClass() == TextField.class) {
+
+                // Set the givenAnswer to the TextField input
+                ((TextField) indexAnswerControl).setText(indexAnswer);
+            }
+        }
+    }
+
 }
