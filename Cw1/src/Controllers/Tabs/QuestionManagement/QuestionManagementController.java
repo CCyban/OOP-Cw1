@@ -54,13 +54,6 @@ public class QuestionManagementController implements Initializable {
         initTableViewQuestions();
     }
 
-    public void initQuestionsObservableList() {
-        Question q1 = new Question("What is 32+23?", Question.QuestionType.Arithmetic, "55", 5, Arrays.asList("Year 3", "Maths"));
-        Question q2 = new Question("What is 1+1? [1, 2, 3, 4]", Question.QuestionType.MultiChoice, "2", 5, Arrays.asList("Year 1", "Maths"));
-
-        questionsObservableList.addAll(q1, q2);
-    }
-
     public void initTableViewQuestions() {
         // Set the TableColumns up for the TableView
         TableColumn idCol = new TableColumn("Id");

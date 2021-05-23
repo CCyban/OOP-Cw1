@@ -62,14 +62,11 @@ public class ViewTestResultsController implements Initializable {
         idCol.setCellValueFactory(new PropertyValueFactory<Result, UUID>("resultUUID"));
         idCol.setPrefWidth(100);
 
-        TableColumn testTitleCol = new TableColumn("Test Id");
-        testTitleCol.setCellValueFactory(new PropertyValueFactory<Result, String>("testUUID"));
-
-        TableColumn totalMarksAchievedCol = new TableColumn("Total Marks Achieved");
-        totalMarksAchievedCol.setCellValueFactory(new PropertyValueFactory<Result, Integer>("totalMarksAchieved"));
+        TableColumn testTitleCol = new TableColumn("Test Title");
+        testTitleCol.setCellValueFactory(new PropertyValueFactory<Result, String>("TestTitle"));
 
         // Add the constructed columns to the TableView
-        tableViewResults.getColumns().addAll(idCol, testTitleCol, totalMarksAchievedCol);
+        tableViewResults.getColumns().addAll(idCol, testTitleCol);
 
         // Hook up the observable list with the TableView
         tableViewResults.setItems(resultsObservableList);
@@ -126,14 +123,6 @@ public class ViewTestResultsController implements Initializable {
 
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
         stage.show();
-
-
-        //TODO: Give a setPurpose prop so it knows to not make a new result on finish and just edit the current given one instead
-
-        tableViewResults.refresh();   // Updates the TableView so it can show the latest version of all results
-        // While ObservableList does observe the elements in the list, it doesn't seem to observe the values of one changing, giving cause for this to be used.
-        // From the Java docs regarding the usage of the refresh method "This is useful in cases where the underlying data source has changed in a way that is not observed by the ListView itself"
-        // Source - https://docs.oracle.com/javase/9/docs/api/javafx/scene/control/ListView.html
     }
 
     @FXML

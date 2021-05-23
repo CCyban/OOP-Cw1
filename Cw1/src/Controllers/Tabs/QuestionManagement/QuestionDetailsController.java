@@ -105,15 +105,8 @@ public class QuestionDetailsController implements Initializable {
                 questionsObservableList.add(newQuestion);
                 break;
             case Edit:
-                // Create the updated version of the question
-                //Question updatedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-                // Find where the old version is kept in the list
-                //int selectedQuestionIndex = questionsObservableList.indexOf(selectedQuestion);
-                // Update the old question with the newly edited question
-                //questionsObservableList.set(selectedQuestionIndex, updatedQuestion);
-
+                // Update the question data with the newly edited values
                 selectedQuestion.EditQuestion(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-
                 break;
             case Clone: //TODO: Add Cloned question to the same test-bank by default (meaning that this isn't a duplicate of the Add case)
                 // Create the newly made clone of the question

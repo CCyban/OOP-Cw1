@@ -1,5 +1,9 @@
 package Classes.Quiz;
 
+import Classes.Banks;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -23,6 +27,18 @@ public class Result implements java.io.Serializable {
 
     public UUID getTestUUID() {
         return testUUID;
+    }
+
+    public String getTestTitle() {
+        ObservableList testBankObservableList = FXCollections.observableArrayList();
+        Banks.loadTestBank(false, true, testBankObservableList);
+
+        String testTitle = ((Test) testBankObservableList.stream()
+                .filter(test -> testUUID.equals(((Test)test).getTestUUID()))
+                .findFirst()
+                .orElse(null)).getTestTitle();
+
+        return testTitle;
     }
 
     public ArrayList<Answer> getResultData() {

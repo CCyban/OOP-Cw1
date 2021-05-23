@@ -43,12 +43,12 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Total Possible Marks:">
+            <Label fx:id="labelTestMarksDescription" text="Total Possible Marks:">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelTotalTestMarks">
+            <Label fx:id="labelTestMarksValue">
                <font>
                   <Font size="24.0" />
                </font>

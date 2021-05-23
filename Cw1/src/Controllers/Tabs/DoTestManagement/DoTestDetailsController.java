@@ -35,7 +35,10 @@ public class DoTestDetailsController implements Initializable {
     private Label labelTestTitle;
 
     @FXML
-    private Label labelTotalTestMarks;
+    private Label labelTestMarksDescription;
+
+    @FXML
+    private Label labelTestMarksValue;
 
     @FXML
     private Accordion accordionTestQuestions;
@@ -129,14 +132,33 @@ public class DoTestDetailsController implements Initializable {
                     // Done so we can keep track of the answers
                     TextField textFieldQuestion = new TextField();
                     givenAnswerControlsArrayList.add(textFieldQuestion);
-                    System.out.println("added");
 
+                    // Setting a arithmetic-answers only TextFormatter to the answer TextField
+                    textFieldQuestion.setTextFormatter(new TextFormatter<>(c ->
+                    {
+                        // If the user is trying to make the input empty, let them
+                        if (c.getControlNewText().isEmpty()) {
+                            return c;
+                        }
+
+                        // Checking if new character passes as an double
+                        try {
+                            Double.parseDouble(c.getControlNewText());
+                        }
+                        // Means that the new character isn't a double, therefore isn't a valid input which cannot be allowed
+                        catch (NumberFormatException e) {
+                            return null;
+                        }
+
+                        // Allows the new input now that it passed the double-type check
+                        return c;
+                    }));
 
                     // Creating and adding the answer HBox to the question VBox
                     HBox hbox = new HBox();
                     hbox.setSpacing(50);
                     hbox.getChildren().add(new Label("Answer: "));
-                    hbox.getChildren().add(textFieldQuestion);    // TODO: APPLY NUMBERSONLY
+                    hbox.getChildren().add(textFieldQuestion);
                     vbox.getChildren().add(hbox);
                     break;
                 case MultiChoice:
@@ -187,7 +209,6 @@ public class DoTestDetailsController implements Initializable {
         }
 
 
-        labelTotalTestMarks.setText(String.valueOf(selectedTest.getTotalMarks()));
     }
 
     public void setSelectedResult(Result _selectedResult) {
@@ -225,9 +246,14 @@ public class DoTestDetailsController implements Initializable {
         switch (doTestDetailsPurpose) {
             case Add:
                 buttonFinishTest.setText("Finish Test");
+                labelTestMarksDescription.setText("Total Possible Marks:");
+                labelTestMarksValue.setText(String.valueOf(selectedTest.getTotalMarks()));
                 break;
             case Edit:
                 buttonFinishTest.setText("Save Modifications");
+                labelTestMarksDescription.setText("Marks Gained:");
+                labelTestMarksValue.setText(selectedResult.getTotalMarksAchieved() + "/" + selectedTest.getTotalMarks());
+
                 break;
             default: System.out.println("Unknown QuestionDetailPurpose"); break;
         }
