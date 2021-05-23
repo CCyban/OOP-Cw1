@@ -6,6 +6,7 @@ import Classes.Quiz.Question;
 import Classes.Quiz.Result;
 import Classes.Quiz.Test;
 import Classes.Translating;
+import Controllers.Tabs.QuestionManagement.QuestionManagementController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,6 +31,9 @@ public class DoTestDetailsController implements Initializable {
     private List<Question> testQuestions;
 
     @FXML
+    private Button buttonFinishTest;
+
+    @FXML
     private Label labelTestTitle;
 
     @FXML
@@ -41,6 +45,11 @@ public class DoTestDetailsController implements Initializable {
     private ArrayList<Object> givenAnswerControlsArrayList = new ArrayList<>();
 
     private Result result;
+
+    private DoTestDetailsPurpose doTestDetailsPurpose;
+
+    public enum DoTestDetailsPurpose { Add, Edit };
+
 
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -81,7 +90,17 @@ public class DoTestDetailsController implements Initializable {
             }
         }
 
-        Banks.updateResultBank(true, new Result(selectedTest.getTestUUID(), arrayListAnswers));
+        switch (doTestDetailsPurpose) {
+            case Add:
+                Banks.updateResultBank(true, true, true, new Result(selectedTest.getTestUUID(), arrayListAnswers));
+                break;
+            case Edit:
+                selectedResult.setResultData(arrayListAnswers);
+                Banks.updateResultBank(true, true, false, selectedResult);
+                break;
+            default:
+                System.out.println("Unknown doTestDetailsPurpose");
+        }
 
         // Closes this dialog now that the result is added
         ((Stage)((Node)(event.getSource())).getScene().getWindow()).close();
@@ -201,4 +220,18 @@ public class DoTestDetailsController implements Initializable {
         }
     }
 
+    public void setTestDoPurpose(DoTestDetailsPurpose _doTestDetailsPurpose) {
+        this.doTestDetailsPurpose = _doTestDetailsPurpose;
+
+        // Alter some initial FXML details depending on the purpose of the visit
+        switch (doTestDetailsPurpose) {
+            case Add:
+                buttonFinishTest.setText("Finish Test");
+                break;
+            case Edit:
+                buttonFinishTest.setText("Save Modifications");
+                break;
+            default: System.out.println("Unknown QuestionDetailPurpose"); break;
+        }
+    }
 }

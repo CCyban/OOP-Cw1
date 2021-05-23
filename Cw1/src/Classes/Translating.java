@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.List;
 
 public class Translating {
-    public static void serialiseObject(Object obj, String filename, Boolean useDialogResult) {
+    public static void serialiseObject(Object obj, String filename, Boolean useDialogOnSuccess, Boolean useDialogOnFailure) {
         // Serialization
         try
         {
@@ -22,7 +22,7 @@ public class Translating {
             out.close();
             file.close();
 
-            if (useDialogResult) {
+            if (useDialogOnSuccess) {
                 Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
                 alertSignIn.setTitle("Data");
                 alertSignIn.setHeaderText("Saved successfully");
@@ -31,14 +31,16 @@ public class Translating {
         }
         catch(Exception ex)
         {
-            Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
-            alertSignIn.setTitle("Data");
-            alertSignIn.setHeaderText("Failed to save - System Error");
-            alertSignIn.showAndWait();
+            if (useDialogOnFailure) {
+                Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
+                alertSignIn.setTitle("Data");
+                alertSignIn.setHeaderText("Failed to save - System Error");
+                alertSignIn.showAndWait();
+            }
         }
     }
 
-    public static List deserialiseList(String filename, Boolean useDialogResult) {
+    public static List deserialiseList(String filename, Boolean useDialogOnSuccess, Boolean useDialogOnFailure) {
         // Deserialization
         try
         {
@@ -52,7 +54,7 @@ public class Translating {
             in.close();
             file.close();
 
-            if (useDialogResult) {
+            if (useDialogOnSuccess) {
                 Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
                 alertSignIn.setTitle("Data");
                 alertSignIn.setHeaderText("Loaded successfully");
@@ -62,10 +64,12 @@ public class Translating {
         }
         catch(Exception ex)
         {
-            Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
-            alertSignIn.setTitle("Data");
-            alertSignIn.setHeaderText("Failed to load - No data to load or System Error");
-            alertSignIn.showAndWait();
+            if (useDialogOnFailure) {
+                Dialog<ButtonType> alertSignIn = new Alert(Alert.AlertType.INFORMATION);
+                alertSignIn.setTitle("Data");
+                alertSignIn.setHeaderText("Failed to load - No data to load or System Error");
+                alertSignIn.showAndWait();
+            }
             return null;
         }
     }

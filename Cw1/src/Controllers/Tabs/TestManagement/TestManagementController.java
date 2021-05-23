@@ -49,7 +49,7 @@ public class TestManagementController implements Initializable {
         });
 
         // Load (if any) stored tests into a ObservableList
-        Banks.loadTestBank(false, testsObservableList);
+        Banks.loadTestBank(false, true, testsObservableList);
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewTests();
@@ -176,11 +176,11 @@ public class TestManagementController implements Initializable {
 
     @FXML
     public void onLoadTestsClick() {
-        Banks.loadTestBank(true, testsObservableList);
+        Banks.loadTestBank(true, true, testsObservableList);
     }
 
     @FXML
     public void onSaveTestsClick() {
-        Banks.saveTestBank(true, testsObservableList);
+        Banks.saveTestBank(true, true, testsObservableList);
     }
 }

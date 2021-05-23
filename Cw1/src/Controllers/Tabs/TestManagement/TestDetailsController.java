@@ -1,5 +1,6 @@
 package Controllers.Tabs.TestManagement;
 
+import Classes.Banks;
 import Classes.Quiz.Question;
 import Classes.Quiz.Test;
 import Classes.Translating;
@@ -74,7 +75,7 @@ public class TestDetailsController implements Initializable {
 
 
         // Loads (if any) stored questions into a ObservableList
-        loadQuestionBank(false);
+        Banks.loadQuestionBank(false, true, questionBankObservableList);
 
         initQuestionBankTableView();
         initTestQuestionsTableView();
@@ -198,14 +199,6 @@ public class TestDetailsController implements Initializable {
 
         // Hook up observable list with the TableView
         tableViewQuestionBank.setItems(questionBankObservableList);
-    }
-
-    public void loadQuestionBank(Boolean useDialogResult) {
-        // Running an attempt to retrieve the data from the questionBank
-        List retrievedData = Translating.deserialiseList("questionBank.ser", useDialogResult);
-        if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
-            questionBankObservableList.addAll(retrievedData);
-        }
     }
 
     @FXML

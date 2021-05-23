@@ -1,5 +1,6 @@
 package Controllers.Tabs.DoTestManagement;
 
+import Classes.Banks;
 import Classes.Quiz.Answer;
 import Classes.Quiz.Question;
 import Classes.Quiz.Test;
@@ -31,7 +32,7 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class DoTestController implements Initializable {
+public class DoTestManagementController implements Initializable {
     @FXML
     private TableView tableViewTests;
 
@@ -53,7 +54,7 @@ public class DoTestController implements Initializable {
         });
 
         // Load (if any) stored questions into a ObservableList
-        loadTestBank(false);
+        Banks.loadTestBank(false, true, testsObservableList);
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewTests();
@@ -65,17 +66,6 @@ public class DoTestController implements Initializable {
         System.out.println("clicked");
 
         openTestView();
-    }
-
-
-    // Loads the data into the ObservableList
-    public void loadTestBank(Boolean useDialogResult) {
-        // Running an attempt to retrieve the data from the questionBank
-        List retrievedData = Translating.deserialiseList("testBank.ser", useDialogResult);
-        if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
-            testsObservableList.clear();
-            testsObservableList.addAll(retrievedData);
-        }
     }
 
     public void initTableViewTests() {
@@ -126,6 +116,7 @@ public class DoTestController implements Initializable {
         // Updating the stage & classes with key details depending on why the dialog is being used
         stage.setTitle("Complete Test");
         dialogController.setSelectedTest(((Test) tableViewTests.getSelectionModel().getSelectedItem()));
+        dialogController.setTestDoPurpose(DoTestDetailsController.DoTestDetailsPurpose.Add);
 
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
         stage.showAndWait();
@@ -140,7 +131,7 @@ public class DoTestController implements Initializable {
 
     @FXML
     public void onLoadLatestTestsClick() {
-        loadTestBank(true);
+        Banks.loadTestBank(true, true, testsObservableList);
     }
 
 }

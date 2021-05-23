@@ -50,7 +50,7 @@ public class ViewTestResultsController implements Initializable {
         });
 
         // Load (if any) stored tests into a ObservableList
-        Banks.loadResultBank(false, resultsObservableList);
+        Banks.loadResultBank(false, true, resultsObservableList);
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewResults();
@@ -108,12 +108,12 @@ public class ViewTestResultsController implements Initializable {
         DoTestDetailsController dialogController = fxmlLoader.getController();
 
         // Updating the stage & classes with key details depending on why the dialog is being used
-        stage.setTitle("Complete Test");
+        stage.setTitle("Review Test Attempt");
 
         Result result = (Result) tableViewResults.getSelectionModel().getSelectedItem();
         UUID testUUID = result.getTestUUID();
 
-        Banks.loadTestBank(false, testsObservableList);
+        Banks.loadTestBank(false, true, testsObservableList);
 
         Test selectedTest = testsObservableList.stream()
                 .filter(test -> testUUID.equals(test.getTestUUID()))
@@ -121,11 +121,12 @@ public class ViewTestResultsController implements Initializable {
                 .orElse(null);
 
         dialogController.setSelectedTest(selectedTest);
+        dialogController.setSelectedResult(result); // Important that this runs after the setSelectedTest as setSelectedTest generates the UI and this one fills it with the given answers
+        dialogController.setTestDoPurpose(DoTestDetailsController.DoTestDetailsPurpose.Edit);
 
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
         stage.show();
 
-        dialogController.setSelectedResult(result); // Here so it runs after the init method
 
         //TODO: Give a setPurpose prop so it knows to not make a new result on finish and just edit the current given one instead
 
@@ -149,11 +150,11 @@ public class ViewTestResultsController implements Initializable {
 
     @FXML
     public void onLoadResultsClick(ActionEvent event) {
-        Banks.loadResultBank(true, resultsObservableList);
+        Banks.loadResultBank(true, true, resultsObservableList);
     }
 
     @FXML
     public void onSaveResultsClick(ActionEvent event) {
-        Banks.saveResultBank(true, resultsObservableList);
+        Banks.saveResultBank(true, true, resultsObservableList);
     }
 }

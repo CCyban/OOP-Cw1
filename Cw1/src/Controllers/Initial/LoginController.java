@@ -1,5 +1,6 @@
 package Controllers.Initial;
 
+import Classes.Banks;
 import Classes.Translating;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -50,7 +51,7 @@ public class LoginController implements Initializable {
                 setCanSignIn(true);
         });
 
-        //GenerateBanksIfUnfound();
+        Banks.generateBanksIfNotFound();    // Simply generates all missing banks (as in questionBank, testBank, resultBank)
     }
 
     @FXML
@@ -70,6 +71,7 @@ public class LoginController implements Initializable {
             alertSignIn.setTitle("Sign In Attempt");
             alertSignIn.setHeaderText("Sign In Attempt Successful");
             alertSignIn.showAndWait();
+
 
             updateStageOnSuccessfulSignIn();
         }

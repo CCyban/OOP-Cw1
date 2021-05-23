@@ -36,4 +36,8 @@ public class Result implements java.io.Serializable {
         }
         return totalMarksAchieved;
     }
+
+    public void setResultData(ArrayList<Answer> _resultData) {
+        resultData = _resultData;
+    }
 }

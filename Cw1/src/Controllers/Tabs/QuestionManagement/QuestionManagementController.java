@@ -48,7 +48,7 @@ public class QuestionManagementController implements Initializable {
         });
 
         // Load (if any) stored questions into a ObservableList
-        Banks.loadQuestionBank(false, questionsObservableList);
+        Banks.loadQuestionBank(false, true, questionsObservableList);
 
         // Load TableView with its columns & the newly made ObservableList
         initTableViewQuestions();
@@ -179,11 +179,11 @@ public class QuestionManagementController implements Initializable {
 
     @FXML
     public void onLoadQuestionsClick() {
-        Banks.loadQuestionBank(true, questionsObservableList);
+        Banks.loadQuestionBank(true, true, questionsObservableList);
     }
 
     @FXML
     public void onSaveQuestionsClick() {
-        Banks.saveQuestionBank(true, questionsObservableList);
+        Banks.saveQuestionBank(true, true, questionsObservableList);
     }
 }

@@ -22,7 +22,7 @@
       <RowConstraints maxHeight="604.0" minHeight="589.0" prefHeight="598.0" vgrow="ALWAYS" />
    </rowConstraints>
    <children>
-      <Button fx:id="buttonFinishTest" mnemonicParsing="false" onAction="#onFinishTestClick" text="Finish Test" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Button fx:id="buttonFinishTest" mnemonicParsing="false" onAction="#onFinishTestClick" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
@@ -34,7 +34,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelTestTitle" text="Label">
+            <Label fx:id="labelTestTitle">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -43,12 +43,12 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
          <children>
-            <Label text="Total Marks:">
+            <Label text="Total Possible Marks:">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label fx:id="labelTotalTestMarks" text="idk">
+            <Label fx:id="labelTotalTestMarks">
                <font>
                   <Font size="24.0" />
                </font>
@@ -62,6 +62,9 @@
             </Accordion>
 
          </content>
+         <GridPane.margin>
+            <Insets top="30.0" />
+         </GridPane.margin>
       </ScrollPane>
    </children>
    <padding>
