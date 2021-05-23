@@ -5,8 +5,6 @@ import Classes.Quiz.Answer;
 import Classes.Quiz.Question;
 import Classes.Quiz.Result;
 import Classes.Quiz.Test;
-import Classes.Translating;
-import Controllers.Tabs.QuestionManagement.QuestionManagementController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

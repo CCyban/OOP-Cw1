@@ -3,7 +3,6 @@ package Controllers.Tabs.TestManagement;
 import Classes.Banks;
 import Classes.Quiz.Question;
 import Classes.Quiz.Test;
-import Classes.Translating;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -204,7 +203,7 @@ public class TestDetailsController implements Initializable {
     @FXML
     public void onAddToTestClick(ActionEvent event) {
         // Adds the question to the test
-        selectedTest.addQuestion((Question) tableViewQuestionBank.getSelectionModel().getSelectedItem());
+        selectedTest.addQuestion(((Question) tableViewQuestionBank.getSelectionModel().getSelectedItem()).getQuestionUUID());
         // Refreshes data/table TODO FOR Cw2: Make it automatic
         testQuestionsObservableList = FXCollections.observableArrayList(selectedTest.getQuestions());
         tableViewTestQuestions.setItems(FXCollections.observableArrayList(selectedTest.getQuestions()));
@@ -226,7 +225,7 @@ public class TestDetailsController implements Initializable {
         }
 
         // Removes the question from the test
-        selectedTest.removeQuestion((Question) tableViewTestQuestions.getSelectionModel().getSelectedItem());
+        selectedTest.removeQuestion(((Question) tableViewTestQuestions.getSelectionModel().getSelectedItem()).getQuestionUUID());
         // Refreshes data/table TODO FOR Cw2: Make it automatic
         testQuestionsObservableList = FXCollections.observableArrayList(selectedTest.getQuestions());
         tableViewTestQuestions.setItems(FXCollections.observableArrayList(selectedTest.getQuestions()));

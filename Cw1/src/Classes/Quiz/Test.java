@@ -1,5 +1,9 @@
 package Classes.Quiz;
 
+import Classes.Banks;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -7,23 +11,23 @@ public class Test implements java.io.Serializable {
 
     UUID testUUID;
     String testTitle;
-    ArrayList<Question> Questions;
+    ArrayList<UUID> questionUUIDs;
 
-    public Test(String _testTitle, ArrayList<Question> _Questions) {
+    public Test(String _testTitle, ArrayList<UUID> _questionUUIDs) {
         // Generate a UUID for the test
         testUUID = UUID.randomUUID();
 
         // Use payload values
         testTitle = _testTitle;
-        Questions = _Questions;
+        questionUUIDs = _questionUUIDs;
     }
 
-    public void addQuestion(Question question) {
-        Questions.add(question);
+    public void addQuestion(UUID questionUUID) {
+        questionUUIDs.add(questionUUID);
     }
 
-    public void removeQuestion(Question question) {
-        Questions.remove(question);
+    public void removeQuestion(UUID questionUUID) {
+        questionUUIDs.remove(questionUUID);
     }
 
     public UUID getTestUUID() {
@@ -39,7 +43,21 @@ public class Test implements java.io.Serializable {
     }
 
     public List<Question> getQuestions() {
-        return Questions;
+        ObservableList testQuestionsObservableList = FXCollections.observableArrayList();
+
+        ObservableList questionBankObservableList = FXCollections.observableArrayList();
+        Banks.loadQuestionBank(false, true, questionBankObservableList);
+
+        for (UUID questionUUID: questionUUIDs) {
+
+            Question currentQuestion = (Question) questionBankObservableList.stream()
+                    .filter(question -> questionUUID.equals(((Question)question).getQuestionUUID()))
+                    .findFirst()
+                    .orElse(null);
+
+            testQuestionsObservableList.add(currentQuestion);
+        }
+        return testQuestionsObservableList;
     }
 
     public List<Question> searchQuestionsByTag(String search) { // Todo: A possible task
@@ -47,9 +65,19 @@ public class Test implements java.io.Serializable {
     }
 
     public int getTotalMarks() {
+        ObservableList questionBankObservableList = FXCollections.observableArrayList();
+        Banks.loadQuestionBank(false, true, questionBankObservableList);
+
         int totalMarks = 0;
-        for (Question question: Questions) {
-            totalMarks += question.getCorrectMarks();
+
+        for (UUID questionUUID: questionUUIDs) {
+
+            Question currentQuestion = (Question) questionBankObservableList.stream()
+                    .filter(question -> questionUUID.equals(((Question)question).getQuestionUUID()))
+                    .findFirst()
+                    .orElse(null);
+
+            totalMarks += currentQuestion.getCorrectMarks();
         }
         return totalMarks;
     }
