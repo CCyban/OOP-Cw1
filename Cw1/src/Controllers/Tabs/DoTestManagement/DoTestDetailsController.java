@@ -1,6 +1,7 @@
 package Controllers.Tabs.DoTestManagement;
 
 import Classes.Banks;
+import Classes.RegexTextFormatters;
 import Classes.Quiz.Answer;
 import Classes.Quiz.Question;
 import Classes.Quiz.Result;
@@ -134,25 +135,7 @@ public class DoTestDetailsController implements Initializable {
                     givenAnswerControlsArrayList.add(textFieldQuestion);
 
                     // Setting a arithmetic-answers only TextFormatter to the answer TextField
-                    textFieldQuestion.setTextFormatter(new TextFormatter<>(c ->
-                    {
-                        // If the user is trying to make the input empty, let them
-                        if (c.getControlNewText().isEmpty()) {
-                            return c;
-                        }
-
-                        // Checking if new character passes as an double
-                        try {
-                            Double.parseDouble(c.getControlNewText());
-                        }
-                        // Means that the new character isn't a double, therefore isn't a valid input which cannot be allowed
-                        catch (NumberFormatException e) {
-                            return null;
-                        }
-
-                        // Allows the new input now that it passed the double-type check
-                        return c;
-                    }));
+                    RegexTextFormatters.setNumbersOnlyTextFormatter(textFieldQuestion);
 
                     // Creating and adding the answer HBox to the question VBox
                     HBox hbox = new HBox();

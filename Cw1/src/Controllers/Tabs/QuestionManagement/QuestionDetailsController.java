@@ -1,5 +1,6 @@
 package Controllers.Tabs.QuestionManagement;
 
+import Classes.RegexTextFormatters;
 import Classes.Quiz.Question;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -170,67 +171,13 @@ public class QuestionDetailsController implements Initializable {
 
     public void initTextFormattersForInputs() {
         // Adding a integer-only TextFormatter to the textField 'Amount of Marks' input
-        textFieldAmountMarksInput.setTextFormatter(new TextFormatter<>(c ->
-        {
-            // If the user is trying to make the input empty, let them
-            if ( c.getControlNewText().isEmpty() )
-                return c;
-
-            // If the new length of the text would be more than 3 digits, then do not allow
-            if (c.getControlNewText().length() > 3)
-                return null;
-
-            // Checking if new character passes as an integer
-            try {
-                Integer.parseInt(c.getControlNewText());
-            }
-            // Means that the new character isn't an integer, therefore isn't a valid input which cannot be allowed
-            catch (NumberFormatException e)
-            {
-                return null;
-            }
-
-            // Allows the new input now that it passed the integer check
-            return c;
-        }));
+        RegexTextFormatters.set3WholeNumbersOnlyTextFormatter(textFieldAmountMarksInput);
 
         // Adding a single-line only TextFormatter to the textArea 'Question' input
-        textAreaQuestionInput.setTextFormatter(new TextFormatter<>(c ->
-        {
-            // If the user is trying to make the input empty, let them
-            if ( c.getControlNewText().isEmpty() )
-                return c;
-
-            // If the new length of the text would be more than 1024 characters, then do not allow
-            if (c.getControlNewText().length() > 1024)
-                return null;
-
-            // If the new text contains a new line, do not allow
-            if (c.getControlNewText().contains("\n"))
-                return null;
-
-            // Allows the new text now that it passed the checks
-            return c;
-        }));
+        RegexTextFormatters.setSingleLineTextFormatter(textAreaQuestionInput);
 
         // Applying the same single-line only TextFormatter to the textArea 'Answer' input
-        textAreaAnswerInput.setTextFormatter(new TextFormatter<>(c ->
-        {
-            // If the user is trying to make the input empty, let them
-            if ( c.getControlNewText().isEmpty() )
-                return c;
-
-            // If the new length of the text would be more than 1024 characters, then do not allow
-            if (c.getControlNewText().length() > 1024)
-                return null;
-
-            // If the new text contains a new line, do not allow
-            if (c.getControlNewText().contains("\n"))
-                return null;
-
-            // Allows the new text now that it passed the checks
-            return c;
-        }));
+        RegexTextFormatters.setSingleLineTextFormatter(textAreaAnswerInput);
     }
 
     @FXML
@@ -255,26 +202,8 @@ public class QuestionDetailsController implements Initializable {
                 labelQuestionHelpText.setText("Example: What is 2+2?");
                 labelAnswerHelpText.setText("Example: 4\nOnly numbers and decimals can be used in the answer due to the question type");
 
-                // Set TextFormatters
-                textAreaAnswerInput.setTextFormatter(new TextFormatter<>(c ->
-                {
-                    // If the user is trying to make the input empty, let them
-                    if (c.getControlNewText().isEmpty()) {
-                        return c;
-                    }
-
-                    // Checking if new character passes as an double
-                    try {
-                        Double.parseDouble(c.getControlNewText());
-                    }
-                    // Means that the new character isn't a double, therefore isn't a valid input which cannot be allowed
-                    catch (NumberFormatException e) {
-                        return null;
-                    }
-
-                    // Allows the new input now that it passed the double-type check
-                    return c;
-                }));
+                // Set TextFormatter
+                RegexTextFormatters.setNumbersOnlyTextFormatter(textAreaAnswerInput);
 
                 // End case
                 break;
@@ -284,7 +213,7 @@ public class QuestionDetailsController implements Initializable {
                 labelQuestionHelpText.setText("Example: What is 2+2?    (1, 2, Three, Orange)\nThe choices are a part of the question and are in a pair of () with each choice separated by ,");
                 labelAnswerHelpText.setText("Example: 2");
 
-                // Set TextFormatters
+                // Set TextFormatter to null as one isn't needed for this question type
                 if (textAreaAnswerInput.getTextFormatter() != null) {
                     textAreaAnswerInput.setTextFormatter(null); // Overwrite the preexisting text-formatter
                 }
