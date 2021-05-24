@@ -24,40 +24,16 @@ public class LoginController implements Initializable {
     @FXML
     private Button buttonSignIn;
 
-    private SimpleBooleanProperty canSignIn = new SimpleBooleanProperty();
 
-    public final SimpleBooleanProperty canSignInProperty() {
-        return canSignIn;
-    };
-
-    public final Boolean getCanSignIn() {
-        return canSignIn.getValue();
-    }
-
-    public final void setCanSignIn(Boolean _canSignIn) {
-        this.canSignIn.setValue(_canSignIn);
-    }
-    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Bindings
-        buttonSignIn.disableProperty().bind(canSignIn.not());
-
-        // Listeners
-        textFieldAccountNumber.textProperty().addListener((Observable, oldValue, newValue) -> {
-            if (newValue == "")
-                setCanSignIn(false);
-            else
-                setCanSignIn(true);
-        });
 
         Banks.generateBanksIfNotFound();    // Simply generates all missing banks (as in questionBank, testBank, resultBank)
     }
 
     @FXML
     public void onEnter(ActionEvent event) {
-        if (getCanSignIn())
-            SignIn(textFieldAccountNumber.getText());
+        SignIn(textFieldAccountNumber.getText());
     }
 
     @FXML
@@ -89,10 +65,7 @@ public class LoginController implements Initializable {
 
     public Boolean isSignInSuccessful(String accountNumber) {
         System.out.println("Attempting to sign in as '" + accountNumber + "'...");
-        if (accountNumber.equals("123"))
-            return true;
-        else
-            return false;
+        return true;
     }
 
     public void updateStageOnSuccessfulSignIn() {
