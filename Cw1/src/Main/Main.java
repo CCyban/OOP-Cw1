@@ -5,20 +5,22 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
         //Configuring properties
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("/Views/Initial/Login.fxml"));
         }
-        catch(Exception ex) {
-            System.out.println("Failed to load login");
+        catch(IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Failed to load login screen").show();
         }
         primaryStage.setTitle("Cw1");
         primaryStage.setResizable(false);

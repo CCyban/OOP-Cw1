@@ -143,7 +143,7 @@ public class QuestionDetailsController implements Initializable {
                     return;
                 }
                 break;
-            default: break;
+            default: break; // It's okay if a question-type doesn't need any further validation than the general validation
         }
 
         // Generate the question in text-form in preparation to show to the user for confirmation
@@ -178,7 +178,8 @@ public class QuestionDetailsController implements Initializable {
                 buttonFinishQuestion.setText("Create Cloned Question");
                 comboBoxQuestionTypeInput.setDisable(true); // User is not allowed to change type when cloning according to the requirements
                 break;
-            default: System.out.println("Unknown QuestionDetailPurpose"); break;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
@@ -255,7 +256,8 @@ public class QuestionDetailsController implements Initializable {
                 // End case
                 break;
 
-            default: System.out.println("questionType value not recognised"); break;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
@@ -292,7 +294,8 @@ public class QuestionDetailsController implements Initializable {
                                 "\nAnswer: " + answerInput +
                                 "\nTags: " + tagsInput;
                 break;
-            default: System.out.println("Unknown questionTypeInput"); break;
+            default:
+                throw new IllegalArgumentException();
         }
         return contentText;
     }
@@ -362,9 +365,8 @@ public class QuestionDetailsController implements Initializable {
                     }
                 });
                 break;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 }
-
-
-//TODO: Add validation to see if the user inputted a correct question format with the MultiChoice and that the answer exists within the inputted options. (Would run at the create question button)

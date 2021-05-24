@@ -91,25 +91,14 @@ public class TestDetailsController implements Initializable {
             return;
         }
 
-        // No need to gather the testQuestions list because I can just reference it directly
+        // No need to gather the testQuestions list because I am just referencing it directly
 
         // The Gathering is complete
 
-        // Time to do whatever the purpose of this dialog is with the inputted values
-        switch (testDetailsPurpose) {
-            case Add:
-                // Load the gathered inputs into the constructor
-                //Test newTest = new Test(testTitleInput, testQuestionsObservableList.stream().toList());
-                // Add the new constructed Test to the list
-                selectedTest.setTestTitle(testTitleInput);
-                break;
-            case Edit:
-                selectedTest.setTestTitle(testTitleInput);
-                break;
-            default: System.out.println("Unknown testDetailPurpose value"); break;
-        }
+        // Use gathered data to finalise the finish-test procedure
+        selectedTest.setTestTitle(testTitleInput);
 
-        // Closes this dialog now that the test is added
+        // Closes this dialog now that the test is fully added/edited
         ((Stage)((Node)(event.getSource())).getScene().getWindow()).close();
     }
 
@@ -124,7 +113,7 @@ public class TestDetailsController implements Initializable {
         switch (testDetailsPurpose) {
             case Add: buttonFinishTest.setText("Create Test"); break;
             case Edit: buttonFinishTest.setText("Update Test"); break;
-            default: System.out.println("Unknown TestDetailPurpose"); break;
+            default: throw new IllegalArgumentException();
         }
     }
 

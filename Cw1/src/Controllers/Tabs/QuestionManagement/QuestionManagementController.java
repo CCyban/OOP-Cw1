@@ -148,7 +148,7 @@ public class QuestionManagementController implements Initializable {
         }
         catch (IOException e)
         {
-            System.out.println("Could not find resource");
+            new Alert(Alert.AlertType.ERROR, "Failed to load the QuestionDetails dialog").show();
         }
 
         Scene scene = new Scene(parent, 900, 500);
@@ -177,8 +177,7 @@ public class QuestionManagementController implements Initializable {
                 dialogController.setSelectedQuestion((Question) tableViewQuestions.getSelectionModel().getSelectedItem());
                 break;
             default:
-                System.out.println("questionDetailsPurpose value not recognised");
-                break;
+                throw new IllegalArgumentException();
         }
 
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed

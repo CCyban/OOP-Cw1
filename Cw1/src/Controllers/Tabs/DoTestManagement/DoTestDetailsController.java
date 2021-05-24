@@ -6,6 +6,7 @@ import Classes.Quiz.Answer;
 import Classes.Quiz.Question;
 import Classes.Quiz.Result;
 import Classes.Quiz.Test;
+import Controllers.Tabs.TestManagement.TestManagementController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,6 +67,12 @@ public class DoTestDetailsController implements Initializable {
             int marksAchieved = 0;
             if (answer.getClass() == ToggleGroup.class) {
 
+                // If the user didn't select an answer, alert the user & abort the finish test procedure
+                if (((ToggleGroup)answer).getSelectedToggle() == null) {
+                    new Alert(Alert.AlertType.ERROR, "No option is selected in Question " + (index + 1)).show();
+                    return;
+                }
+
                 // Extract the answer given from the selected radio button
                 String answerGiven = ((RadioButton) ((ToggleGroup)answer).getSelectedToggle()).getText();
 
@@ -81,6 +88,12 @@ public class DoTestDetailsController implements Initializable {
 
                 // Extract the answer given from the TextField input
                 String answerGiven = ((TextField) answer).getText();
+
+                // If the user didn't fill in an answer, alert the user & abort the finish test procedure
+                if (answerGiven.isBlank()) {
+                    new Alert(Alert.AlertType.ERROR, "Question " + (index + 1) + " is not filled in").show();
+                    return;
+                }
 
                 // If the user got it correct, give the marks
                 if (answerGiven.equals(question.getCorrectAnswer())) {
@@ -101,7 +114,7 @@ public class DoTestDetailsController implements Initializable {
                 Banks.updateResultBank(true, true, false, selectedResult);
                 break;
             default:
-                System.out.println("Unknown doTestDetailsPurpose");
+                throw new IllegalArgumentException();
         }
 
         // Closes this dialog now that the result is added
@@ -169,8 +182,6 @@ public class DoTestDetailsController implements Initializable {
 
                     // Done so we can keep track of the answers
                     givenAnswerControlsArrayList.add(toggleGroupQuestion);
-                    System.out.println("added");
-
 
                     // Now showing the other subsection - the options part
                     // For each option loop
@@ -182,8 +193,7 @@ public class DoTestDetailsController implements Initializable {
                     }
                     break;
                 default:
-                    System.out.println("QuestionType value not recognised");
-                    break;
+                    throw new IllegalArgumentException();
             }
 
             TitledPane titledPane = new TitledPane("Question " + (index + 1), vbox);
@@ -236,9 +246,9 @@ public class DoTestDetailsController implements Initializable {
                 buttonFinishTest.setText("Save Modifications");
                 labelTestMarksDescription.setText("Marks Gained:");
                 labelTestMarksValue.setText(selectedResult.getTotalMarksAchieved() + "/" + selectedTest.getTotalMarks());
-
                 break;
-            default: System.out.println("Unknown QuestionDetailPurpose"); break;
+            default:
+                throw new IllegalArgumentException();
         }
     }
 }

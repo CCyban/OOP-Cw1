@@ -1,4 +1,4 @@
-package Controllers.Tabs.ViewTestResultsManagement;
+package Controllers.Tabs.DoTestManagement;
 
 import Classes.Banks;
 import Classes.Quiz.Result;
@@ -76,7 +76,6 @@ public class ViewTestResultsController implements Initializable {
 
 
     public void onEditSelectedResultClick(ActionEvent event) {
-        System.out.println("clicked");
         openTestView();
     }
 
@@ -95,7 +94,7 @@ public class ViewTestResultsController implements Initializable {
         }
         catch (IOException e)
         {
-            System.out.println("Could not find resource");
+            new Alert(Alert.AlertType.ERROR, "Failed to load the DoTestDetails dialog").show();
         }
 
         Scene scene = new Scene(parent, 1200, 700);

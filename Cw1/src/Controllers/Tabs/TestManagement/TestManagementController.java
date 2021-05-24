@@ -129,7 +129,7 @@ public class TestManagementController implements Initializable {
         }
         catch (IOException e)
         {
-            System.out.println("Could not find resource");
+            new Alert(Alert.AlertType.ERROR, "Failed to load the TestDetails page").show();
         }
 
         Scene scene = new Scene(parent, 1200, 700);
@@ -167,8 +167,7 @@ public class TestManagementController implements Initializable {
                 stage.showAndWait();
                 break;
             default:
-                System.out.println("testDetailsPurpose value not recognised");
-                break;
+                throw new IllegalArgumentException();
         }
 
         tableViewTests.refresh();   // Updates the TableView so it can show the latest version of all tests
