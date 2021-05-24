@@ -70,12 +70,11 @@ public class DoTestManagementController implements Initializable {
 
     public void initTableViewTests() {
         // Set the TableColumns up for the TableView
-        TableColumn idCol = new TableColumn("Id");
+        TableColumn idCol = new TableColumn("Test Id");
         idCol.setCellValueFactory(new PropertyValueFactory<Test, UUID>("testUUID"));
-        idCol.setPrefWidth(100);
 
         TableColumn testTitleCol = new TableColumn("Test Title");
-        testTitleCol.setCellValueFactory(new PropertyValueFactory<Test, String>("TestTitle"));
+        testTitleCol.setCellValueFactory(new PropertyValueFactory<Test, String>("testTitle"));
 
         TableColumn totalMarksCol = new TableColumn("Total Marks");
         totalMarksCol.setCellValueFactory(new PropertyValueFactory<Test, Integer>("totalMarks"));

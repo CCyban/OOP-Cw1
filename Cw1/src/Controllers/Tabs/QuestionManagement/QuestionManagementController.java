@@ -58,7 +58,7 @@ public class QuestionManagementController implements Initializable {
 
     public void initTableViewQuestions() {
         // Set the TableColumns up for the TableView
-        TableColumn idCol = new TableColumn("Id");
+        TableColumn idCol = new TableColumn("Question Id");
         idCol.setCellValueFactory(new PropertyValueFactory<Question, UUID>("questionUUID"));
         idCol.setPrefWidth(100);
 
@@ -66,7 +66,7 @@ public class QuestionManagementController implements Initializable {
         typeCol.setCellValueFactory(new PropertyValueFactory<Question, Question.QuestionType>("questionType"));
 
         TableColumn correctMarksCol = new TableColumn("Possible Marks");
-        correctMarksCol.setCellValueFactory(new PropertyValueFactory<Question, Integer>("CorrectMarks"));
+        correctMarksCol.setCellValueFactory(new PropertyValueFactory<Question, Integer>("correctMarks"));
 
         TableColumn tagsCol = new TableColumn("Tags");
         tagsCol.setCellValueFactory(new PropertyValueFactory<Question, List<String>>("Tags"));

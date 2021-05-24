@@ -1,5 +1,6 @@
 package Controllers.Tabs.QuestionManagement;
 
+import Classes.Banks;
 import Classes.RegexTextFormatters;
 import Classes.Quiz.Question;
 import javafx.collections.FXCollections;
@@ -12,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -59,7 +61,9 @@ public class QuestionDetailsController implements Initializable {
 
     @FXML
     public void onFinishQuestionClick(ActionEvent event) {
-        // The Gathering begins...
+
+
+        // The Gathering begins... (with some general validation)
 
         // Gather QuestionType value
         QuestionType questionTypeInput = (QuestionType) comboBoxQuestionTypeInput.getValue();
@@ -86,39 +90,69 @@ public class QuestionDetailsController implements Initializable {
             showIncompleteFormError();
             return;
         }
-        int amountMarksInput = Integer.parseInt(textFieldAmountMarksInput.getText());
 
+        // Cannot throw any exception since the TextFormatter makes it numbers-only
+        int amountMarksInput = Integer.parseInt(textFieldAmountMarksInput.getText());
 
         // Gather a list of Tags
         List<String> tagsInput = Arrays.stream(textFieldTagsInput.getText().split(","))  // Makes a list with each new element after a comma, then converts it into a stream
                 .map(String::strip)                                                            // Strips whitespace from the stream (means that it only strips the edges of the previous elements)
                 .collect(Collectors.toList());                                                // Converts the stripped stream back into a list
 
-
         // The Gathering is complete
 
-        // Time to do whatever the purpose of this dialog is with the inputted values
-        switch (questionDetailsPurpose) {
-            case Add:
-                // Load the gathered inputs into the constructor
-                Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-                // Add the new constructed Question to the list
-                questionsObservableList.add(newQuestion);
+
+        // Question-type specific validation
+        switch (questionTypeInput) {
+            case MultiChoice:
+                // Storing a local copy of the question string as it will be modified
+                String entireQuestion = questionInput;
+
+                if (!entireQuestion.contains("(") || !entireQuestion.contains(")")) {   //
+                    new Alert(Alert.AlertType.INFORMATION, "The question needs to contain options.\nLook at the help text below the question text box for an example.").show();
+                    return;
+                }
+
+                // Find the split of the subsections & remove the brackets to clean it up
+                int optionsIndex = entireQuestion.indexOf('(');                     // Finds where initial question ends & the options begin
+                entireQuestion = entireQuestion.replace("(", "");   // Removes the '('
+                entireQuestion = entireQuestion.replace(")", "");   // Removes the ')'
+
+                if (entireQuestion.length() + 2 != questionInput.length()) { // If the question contains more brackets than just a single pair, alert user to do it properly
+                    new Alert(Alert.AlertType.ERROR, "The question contains more brackets than just a single pair for options.").show();
+                    return;
+                }
+
+                // Get the 'options' subsection
+                String questionOptionsString = entireQuestion.substring(optionsIndex);    // Splits the entireQuestion into the question options part
+                List questionOptionsList = Arrays.asList(questionOptionsString.split("\\s*,\\s*"));
+
+                if (questionOptionsList.size() > 4 ) { // If the question contains at least 1 option
+                    new Alert(Alert.AlertType.ERROR, "There needs to be no more than 4 options in the question.").show();
+                    return;
+                }
+
+                if (questionOptionsList.size() == 1 && questionOptionsList.get(0).equals("")) {
+                    new Alert(Alert.AlertType.ERROR, "There needs to at least 1 option in the question.").show();
+                    return;
+                }
+
+
+                if (!questionOptionsList.contains(answerInput)) {
+                    new Alert(Alert.AlertType.INFORMATION, "One of the question options needs to be the answer").show();
+                    return;
+                }
                 break;
-            case Edit:
-                // Update the question data with the newly edited values
-                selectedQuestion.EditQuestion(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-                break;
-            case Clone: //TODO: Add Cloned question to the same test-bank by default (meaning that this isn't a duplicate of the Add case)
-                // Create the newly made clone of the question
-                Question newClonedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-                // Add the new constructed cloned question into the list
-                questionsObservableList.add(newClonedQuestion);
-                break;
-            default: System.out.println("Unknown QuestionDetailPurpose"); break;
+            default: break;
         }
 
-        // Closes this dialog now that the question is added
+        // Generate the question in text-form in preparation to show to the user for confirmation
+        String contentText = getContentText(amountMarksInput, questionTypeInput, questionInput, answerInput, tagsInput);
+
+        // Do the assigned action with confirmation dialogs
+        doActionWithConfirmation(amountMarksInput, questionTypeInput, questionInput, answerInput, tagsInput, contentText);
+
+        // Closes this dialog now that the action has been finished with
         ((Stage)((Node)(event.getSource())).getScene().getWindow()).close();
     }
 
@@ -224,7 +258,113 @@ public class QuestionDetailsController implements Initializable {
             default: System.out.println("questionType value not recognised"); break;
         }
     }
+
+    public String getContentText(int amountMarksInput, QuestionType questionTypeInput, String questionInput, String answerInput, List<String> tagsInput) {
+        String contentText = null;
+
+        switch (questionTypeInput) {
+            case Arithmetic:
+                contentText =
+                        "Marks: " + amountMarksInput +
+                                "\nQuestion Type: " + questionTypeInput +
+                                "\nQuestion: " + questionInput +
+                                "\nAnswer: " + answerInput +
+                                "\nTags: " + tagsInput;
+                break;
+            case MultiChoice:   // Slightly more complicated since we have to extract a bit more information before showing the message (for this question type)
+                // Storing a local copy of the question string as it will be modified
+                String entireQuestion = questionInput;
+
+                // Find the split of the subsections & remove the brackets to clean it up
+                int optionsIndex = entireQuestion.indexOf('(');                     // Finds where initial question ends & the options begin
+                entireQuestion = entireQuestion.replace("(", "");   // Removes the '('
+                entireQuestion = entireQuestion.replace(")", "");   // Removes the ')'
+
+                // Get subsections
+                String initialQuestion = questionInput.substring(0, optionsIndex);  // Splits the entireQuestion into the initial question part
+                String questionOptions = entireQuestion.substring(optionsIndex);    // Splits the entireQuestion into the question options part
+
+                contentText =
+                        "Marks: " + amountMarksInput +
+                                "\nQuestion Type: " + questionTypeInput +
+                                "\nQuestion: " + initialQuestion +
+                                "\nChoices: " + Arrays.asList(questionOptions.split("\\s*,\\s*")) +
+                                "\nAnswer: " + answerInput +
+                                "\nTags: " + tagsInput;
+                break;
+            default: System.out.println("Unknown questionTypeInput"); break;
+        }
+        return contentText;
+    }
+
+    // 'Action' meaning the value in the questionDetailsPurpose enum
+    public void doActionWithConfirmation(int amountMarksInput, QuestionType questionTypeInput, String questionInput, String answerInput, List<String> tagsInput, String contentText) {
+        // Ask user if they are sure of their inputs
+        Dialog<ButtonType> confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Confirmation");
+        confirmationDialog.setHeaderText("Are you sure?");
+        confirmationDialog.setContentText(contentText);
+
+
+        switch (questionDetailsPurpose) {
+            case Add:
+                confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
+                    if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
+
+                        // Load the gathered inputs into the constructor
+                        Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+                        // Add the new constructed question to the list
+                        questionsObservableList.add(newQuestion);
+
+                        new Alert(Alert.AlertType.CONFIRMATION, "The question is added to the question bank. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
+                            if (saveResponse == ButtonType.OK) {
+                                Banks.saveQuestionBank(true, true, questionsObservableList);
+                            }
+                        });
+                    } else {
+                        new Alert(Alert.AlertType.INFORMATION, "The question was not added.").show();
+                    }
+                });
+                break;
+            case Edit:
+                confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
+                    if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
+
+                        // Update the question data with the newly edited values
+                        selectedQuestion.EditQuestion(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+
+                        new Alert(Alert.AlertType.CONFIRMATION, "The question is edited. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
+                            if (saveResponse == ButtonType.OK) {
+                                Banks.saveQuestionBank(true, true, questionsObservableList);
+                            }
+                        });
+                    } else {
+                        new Alert(Alert.AlertType.INFORMATION, "The question was not edited.").show();
+                    }
+                });
+                break;
+            case Clone:
+                confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
+                    if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
+
+                        // Create the newly made clone of the question
+                        Question newClonedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+                        // Add the new constructed cloned question into the list
+                        questionsObservableList.add(newClonedQuestion);
+
+                        new Alert(Alert.AlertType.CONFIRMATION, "The question is cloned. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
+                            if (saveResponse == ButtonType.OK) {
+                                Banks.saveQuestionBank(true, true, questionsObservableList);
+                            }
+                        });
+                    } else {
+                        new Alert(Alert.AlertType.INFORMATION, "The question was not cloned.").show();
+                    }
+                });
+                break;
+        }
+    }
 }
 
 
-// TODO: Add validation to see if the user inputted a correct question format with the MultiChoice and that the answer exists within the inputted options. (Would run at the create question button)
+//TODO: Add validation to see if the user inputted a correct question format with the MultiChoice and that the answer exists within the inputted options. (Would run at the create question button)

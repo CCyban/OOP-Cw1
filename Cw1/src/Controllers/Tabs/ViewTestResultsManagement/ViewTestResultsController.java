@@ -43,7 +43,7 @@ public class ViewTestResultsController implements Initializable {
         textFieldSearch.textProperty().addListener((Observable, oldValue, newValue) -> {
 
             // Simply returns true if a tag from a question contains the string from the search (purposely not case-sensitive)
-            Predicate<Result> predicateContainsNonCaseStringOnly = q -> (q.getResultUUID().toString().toUpperCase().contains(textFieldSearch.getText().toUpperCase()));
+            Predicate<Result> predicateContainsNonCaseStringOnly = q -> (q.getTestTitle().toUpperCase().contains(textFieldSearch.getText().toUpperCase()));
 
             // TableView now gets the latest version of the filtered ObservableList
             tableViewResults.setItems(resultsObservableList.filtered(predicateContainsNonCaseStringOnly));
@@ -60,13 +60,15 @@ public class ViewTestResultsController implements Initializable {
         // Set the TableColumns up for the TableView
         TableColumn idCol = new TableColumn("Result Id");
         idCol.setCellValueFactory(new PropertyValueFactory<Result, UUID>("resultUUID"));
-        idCol.setPrefWidth(100);
+
+        TableColumn testIdCol = new TableColumn("Test Id");
+        testIdCol.setCellValueFactory(new PropertyValueFactory<Result, String>("testUUID"));
 
         TableColumn testTitleCol = new TableColumn("Test Title");
-        testTitleCol.setCellValueFactory(new PropertyValueFactory<Result, String>("TestTitle"));
+        testTitleCol.setCellValueFactory(new PropertyValueFactory<Result, String>("testTitle"));
 
         // Add the constructed columns to the TableView
-        tableViewResults.getColumns().addAll(idCol, testTitleCol);
+        tableViewResults.getColumns().addAll(idCol, testIdCol, testTitleCol);
 
         // Hook up the observable list with the TableView
         tableViewResults.setItems(resultsObservableList);
