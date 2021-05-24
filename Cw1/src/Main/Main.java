@@ -10,10 +10,16 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
 
         //Configuring properties
-        Parent root = FXMLLoader.load(getClass().getResource("/Views/Initial/Login.fxml"));
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/Views/Initial/Login.fxml"));
+        }
+        catch(Exception ex) {
+            System.out.println("Failed to load login");
+        }
         primaryStage.setTitle("Cw1");
         primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 1000, 600));
