@@ -2,6 +2,8 @@ package Controllers.Tabs.QuestionManagement;
 
 import Classes.Banks;
 import Classes.Quiz.Question;
+import Classes.Quiz.Result;
+import Classes.Quiz.Test;
 import Classes.Translating;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -105,9 +107,30 @@ public class QuestionManagementController implements Initializable {
             return;
         }
 
+
+        // If the question has a test dependency, do not allow deletion
+        ObservableList<Test> testBank = FXCollections.observableArrayList();
+        Banks.loadTestBank(false, true, testBank);
+
+        Question selectedQuestion = ((Question) tableViewQuestions.getSelectionModel().getSelectedItem());
+
+        for (Test test: testBank) { // For every test in the testBank
+
+            List<UUID> testQuestionUUIDsList = test.getQuestionUUIDs();
+
+            for (UUID questionUUID: testQuestionUUIDsList) {    // For every question in a test, check if it uses a question that the user wishes to delete
+                if (questionUUID.toString().equals(selectedQuestion.getQuestionUUID().toString())) {
+                    new Alert(Alert.AlertType.ERROR, "This question is used in tests, therefore it cannot be deleted. Delete the related tests first to delete this.").show();
+                    return;
+                }
+            }
+        }
+
+        // Now that we know a question is selected & it has no test dependencies, it can be deleted safely
         questionsObservableList.remove(
                 tableViewQuestions.getSelectionModel().getSelectedItem()
         ); // Removes the selected item from the questionsObservableList
+        new Alert(Alert.AlertType.INFORMATION, "Question Deleted").show();
     }
 
     public void openQuestionDetails(QuestionDetailsPurpose questionDetailsPurpose) {

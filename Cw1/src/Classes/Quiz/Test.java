@@ -30,6 +30,8 @@ public class Test implements java.io.Serializable {
         questionUUIDs.remove(questionUUID);
     }
 
+    public List<UUID> getQuestionUUIDs() { return questionUUIDs; }
+
     public UUID getTestUUID() {
         return testUUID;
     }

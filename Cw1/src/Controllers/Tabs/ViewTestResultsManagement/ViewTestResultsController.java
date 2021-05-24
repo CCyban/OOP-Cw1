@@ -127,14 +127,16 @@ public class ViewTestResultsController implements Initializable {
 
     @FXML
     public void onRemoveSelectedResultClick(ActionEvent event) {
-        // If a question is not selected then the action cannot proceed
+        // If a result is not selected then the action cannot proceed
         if (tableViewResults.getSelectionModel().getSelectedItem() == null) {
-            new Alert(Alert.AlertType.ERROR, "No test is selected with your action").show();
+            new Alert(Alert.AlertType.ERROR, "No result is selected with your action").show();
             return;
         }
+
         resultsObservableList.remove(
                 tableViewResults.getSelectionModel().getSelectedItem()
         ); // Removes the selected item from the resultsObservableList
+        new Alert(Alert.AlertType.INFORMATION, "Result Deleted").show();
     }
 
     @FXML

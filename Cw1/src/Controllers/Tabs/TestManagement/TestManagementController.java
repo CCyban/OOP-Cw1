@@ -1,6 +1,8 @@
 package Controllers.Tabs.TestManagement;
 
 import Classes.Banks;
+import Classes.Quiz.Question;
+import Classes.Quiz.Result;
 import Classes.Quiz.Test;
 import Classes.Translating;
 import javafx.collections.FXCollections;
@@ -100,14 +102,30 @@ public class TestManagementController implements Initializable {
 
     @FXML
     public void onRemoveSelectedTestClick(ActionEvent event) {
-        // If a question is not selected then the action cannot proceed
+        // If a test is not selected then the action cannot proceed
         if (tableViewTests.getSelectionModel().getSelectedItem() == null) {
             new Alert(Alert.AlertType.ERROR, "No test is selected with your action").show();
             return;
         }
+
+        // If the test has a result dependency, do not allow deletion
+        ObservableList<Result> resultBank = FXCollections.observableArrayList();
+        Banks.loadResultBank(false, true, resultBank);
+
+        Test selectedTest = ((Test) tableViewTests.getSelectionModel().getSelectedItem());
+
+        for (Result result: resultBank) {   // For every result in the resultBank, check if it is based off the test that the user wishes to delete
+            if (result.getTestUUID().toString().equals(selectedTest.getTestUUID().toString())) {
+                new Alert(Alert.AlertType.ERROR, "This test has results from it, therefore it cannot be deleted. Delete the related results first to delete this.").show();
+                return;
+            }
+        }
+
+        // Now that we know a test is selected & it has no result dependencies, it can be deleted safely
         testsObservableList.remove(
                 tableViewTests.getSelectionModel().getSelectedItem()
         ); // Removes the selected item from the questionsObservableList
+        new Alert(Alert.AlertType.INFORMATION, "Test Deleted").show();
     }
 
 
