@@ -65,7 +65,7 @@ public class TestManagementController implements Initializable {
         TableColumn testTitleCol = new TableColumn("Test Title");
         testTitleCol.setCellValueFactory(new PropertyValueFactory<Test, String>("TestTitle"));
 
-        TableColumn totalMarksCol = new TableColumn("Total Marks");
+        TableColumn totalMarksCol = new TableColumn("Total Possible Marks");
         totalMarksCol.setCellValueFactory(new PropertyValueFactory<Test, Integer>("totalMarks"));
 
         // Add the constructed columns to the TableView
