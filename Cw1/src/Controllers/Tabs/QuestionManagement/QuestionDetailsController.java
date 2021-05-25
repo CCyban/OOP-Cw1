@@ -245,8 +245,8 @@ public class QuestionDetailsController implements Initializable {
 
             case MultiChoice:
                 // Set PromptText
-                labelQuestionHelpText.setText("Example: What is 2+2?    (1, 2, Three, Orange)\nThe choices are a part of the question and are in a pair of () with each choice separated by ,");
-                labelAnswerHelpText.setText("Example: 2");
+                labelQuestionHelpText.setText("Example: What is 2+2?    (1, Two, 4, Orange)\nThe choices are a part of the question and are in a pair of () with each choice separated by ,");
+                labelAnswerHelpText.setText("Example: 4");
 
                 // Set TextFormatter to null as one isn't needed for this question type
                 if (textAreaAnswerInput.getTextFormatter() != null) {

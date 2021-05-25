@@ -62,10 +62,6 @@ public class Test implements java.io.Serializable {
         return testQuestionsObservableList;
     }
 
-    public List<Question> searchQuestionsByTag(String search) { // Todo: A possible task
-        return Collections.EMPTY_LIST;
-    }
-
     public int getTotalMarks() {
         ObservableList questionBankObservableList = FXCollections.observableArrayList();
         Banks.loadQuestionBank(false, true, questionBankObservableList);
