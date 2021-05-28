@@ -57,4 +57,9 @@ This page is used for viewing or editing the results (from the result bank), eit
 This page is used for doing a test. Once a test is finished, it will generate a result & save it into the result bank so it can be viewed/edited or deleted in the 'View Test Results' tab.
 
 ## Tests
-- There are 4 JUnit tests which are all runnable. All the unit tests are run against the classes stored inside the Quiz package. This includes the following classes: **Answer**, **Question**, **Result** & **Test**.
+There are 4 JUnit test classes which contains 19 unit tests in total. All the unit tests are run against the classes stored inside the Quiz package. This includes the following classes: **Answer**, **Question**, **Result** & **Test**.
+### How to run the JUnit tests?
+- To run all at once: Right click the UnitTests.Quiz package and press **Run 'Tests in 'UnitTests.Quiz''**.
+- ![image](https://user-images.githubusercontent.com/47162481/120009506-eec7ac80-bfd3-11eb-8b9a-b94e306335ec.png)
+- The results should show in the **Run** tab
+- ![image](https://user-images.githubusercontent.com/47162481/120009712-29314980-bfd4-11eb-88db-f42d65744092.png)
