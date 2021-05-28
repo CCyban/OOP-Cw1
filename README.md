@@ -5,10 +5,12 @@
 2. [Starting](#Starting)
 3. [Usage](#Usage)
 7. [Tests](#Tests)
+
 ## Description 
 - Cw1 utilises CRUD (Create, Read, Update, Delete) functions for a persistent storage application regarding questions, tests & their results.
+
 ## Starting
-- Note: This getting started tutorial uses an IDE called IntelliJ IDEA.
+- Note: This tutorial uses an IDE called IntelliJ IDEA.
 - Download the ZIP file of this master branch.
 - ![image](https://user-images.githubusercontent.com/47162481/119997860-157fe600-bfc8-11eb-96ba-f8b9ae6b228b.png)
 - Download a JavaFX SDK. They can be found here: https://gluonhq.com/products/javafx/. I recommend getting version 16 because that is what I used within development.
@@ -41,6 +43,7 @@
 - ![image](https://user-images.githubusercontent.com/47162481/120005134-765eec80-bfcf-11eb-9baa-39fe23daf983.png)
 - It should now be running & showing this screen on top of the IDE
 - ![image](https://user-images.githubusercontent.com/47162481/120005206-8c6cad00-bfcf-11eb-852d-e266fa52703a.png)
+
 ## Usage
 When you have run the application, it will start with a login screen. For the purposes of Cw1, any account number (or just pressing enter) will let you through.
 Once through, you will notice 4 tabs where each tab shows a page for a specific usage as listed below.
@@ -52,5 +55,6 @@ This page is used for creating, editing and deleting tests (in the test bank). W
 This page is used for viewing or editing the results (from the result bank), either can be done through the **Edit selected result** button. Results can be deleted through the **Remove selected result** button.
 ### Do a Test
 This page is used for doing a test. Once a test is finished, it will generate a result & save it into the result bank so it can be viewed/edited or deleted in the 'View Test Results' tab.
-## Unit Tests
-- There are 4 JUnit tests which are all runnable. All the unit tests are run against the classes stored inside the Quiz package. This includes the following classes: **Answer**, **Question**, **Result**, **Test**.
+
+## Tests
+- There are 4 JUnit tests which are all runnable. All the unit tests are run against the classes stored inside the Quiz package. This includes the following classes: **Answer**, **Question**, **Result** & **Test**.
