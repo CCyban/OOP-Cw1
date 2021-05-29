@@ -52,7 +52,7 @@ This page is used for creating, editing, cloning and deleting questions (in the 
 ### Test Management
 This page is used for creating, editing and deleting tests (in the test bank). When adding or editing a test, you can add and remove questions.
 ### View Test Results
-This page is used for viewing or editing the results (from the result bank), either can be done through the **Edit selected result** button. Results can be deleted through the **Remove selected result** button.
+This page is used for viewing or editing the results (from the result bank), they can be done through the **Open/Edit Selected Result** button. Results can be deleted through the **Remove Selected Result** button.
 ### Do a Test
 This page is used for doing a test. Once a test is finished, it will generate a result & save it into the result bank so it can be viewed/edited or deleted in the 'View Test Results' tab.
 
