@@ -11,7 +11,7 @@
 
 ## Starting
 - Note: This tutorial uses an IDE called IntelliJ IDEA.
-- Download the ZIP file of this master branch.
+- Download the ZIP of this repository's master branch.
 - ![image](https://user-images.githubusercontent.com/47162481/119997860-157fe600-bfc8-11eb-96ba-f8b9ae6b228b.png)
 - Download a JavaFX SDK. They can be found here: https://gluonhq.com/products/javafx/. I recommend getting version 16 because that is what I used within development.
 - ![image](https://user-images.githubusercontent.com/47162481/119998175-6099f900-bfc8-11eb-8f38-af80ebf4fa7a.png)
