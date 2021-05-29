@@ -2,9 +2,7 @@ package Controllers.Tabs.QuestionManagement;
 
 import Classes.Banks;
 import Classes.Quiz.Question;
-import Classes.Quiz.Result;
 import Classes.Quiz.Test;
-import Classes.Translating;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -162,22 +160,21 @@ public class QuestionManagementController implements Initializable {
 
         // Updating the stage & classes with key details depending on why the dialog is being used
         switch (questionDetailsPurpose) {
-            case Add:
+            case Add -> {
                 stage.setTitle("Add New Question");
                 dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Add);
-                break;
-            case Edit:
+            }
+            case Edit -> {
                 stage.setTitle("Edit Selected Question");
                 dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Edit);
                 dialogController.setSelectedQuestion((Question) tableViewQuestions.getSelectionModel().getSelectedItem());
-                break;
-            case Clone:
+            }
+            case Clone -> {
                 stage.setTitle("Clone Selected Question");
                 dialogController.setQuestionDetailsPurpose(QuestionDetailsPurpose.Clone);
                 dialogController.setSelectedQuestion((Question) tableViewQuestions.getSelectionModel().getSelectedItem());
-                break;
-            default:
-                throw new IllegalArgumentException();
+            }
+            default -> throw new IllegalArgumentException();
         }
 
         // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed

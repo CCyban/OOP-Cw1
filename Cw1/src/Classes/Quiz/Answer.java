@@ -3,9 +3,10 @@ package Classes.Quiz;
 import java.util.UUID;
 
 public class Answer implements java.io.Serializable {
-    UUID questionUUID;
-    int marksAchieved;
-    String givenAnswer;
+
+    private UUID questionUUID;
+    private int marksAchieved;
+    private String givenAnswer;
 
     public Answer(UUID _questionUUID, int _marksAchieved, String _givenAnswer) {
         questionUUID = _questionUUID;
@@ -15,5 +16,9 @@ public class Answer implements java.io.Serializable {
 
     public String getGivenAnswer() {
         return givenAnswer;
+    }
+
+    public int getMarksAchieved() {
+        return marksAchieved;
     }
 }

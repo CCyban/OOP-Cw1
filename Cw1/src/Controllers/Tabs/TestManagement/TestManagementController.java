@@ -1,10 +1,8 @@
 package Controllers.Tabs.TestManagement;
 
 import Classes.Banks;
-import Classes.Quiz.Question;
 import Classes.Quiz.Result;
 import Classes.Quiz.Test;
-import Classes.Translating;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -143,7 +141,7 @@ public class TestManagementController implements Initializable {
 
         // Updating the stage & classes with key details depending on why the dialog is being used
         switch (testDetailsPurpose) {
-            case Add:
+            case Add -> {
                 stage.setTitle("Add New Test");
                 dialogController.setTestDetailsPurpose(TestDetailsPurpose.Add);
                 Test newTest = new Test("", new ArrayList<>());
@@ -154,20 +152,19 @@ public class TestManagementController implements Initializable {
                 stage.showAndWait();
 
                 // If the user didn't finish adding the test, remove it
-                if (newTest.getTestTitle() == "") {
+                if (newTest.getTestTitle().equals("")) {
                     testsObservableList.remove(newTest);
                 }
-                break;
-            case Edit:
+            }
+            case Edit -> {
                 stage.setTitle("Edit Selected Test");
                 dialogController.setTestDetailsPurpose(TestDetailsPurpose.Edit);
                 dialogController.setSelectedTest((Test) tableViewTests.getSelectionModel().getSelectedItem());
 
                 // The 'Wait' part in showAndWait means this method will wait here until the new stage is closed
                 stage.showAndWait();
-                break;
-            default:
-                throw new IllegalArgumentException();
+            }
+            default -> throw new IllegalArgumentException();
         }
 
         tableViewTests.refresh();   // Updates the TableView so it can show the latest version of all tests

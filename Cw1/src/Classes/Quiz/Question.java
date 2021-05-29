@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class Question implements java.io.Serializable {
-    UUID questionUUID;
-    QuestionType questionType;
-    String Question;
-    String correctAnswer;
-    List<String> Tags;
-    int correctMarks;
+
+    private final UUID questionUUID;
+    private QuestionType questionType;
+    private String Question;
+    private String correctAnswer;
+    private List<String> Tags;
+    private int correctMarks;
 
     public Question(String _Question, QuestionType _questionType, String _correctAnswer, int _correctMarks, List<String> _Tags)
     {
@@ -26,11 +27,21 @@ public class Question implements java.io.Serializable {
     }
 
     public void EditQuestion(String _Question, QuestionType _questionType, String _correctAnswer, int _correctMarks, List<String> _Tags) {
-        Question = _Question;
-        questionType = _questionType;
-        correctAnswer = _correctAnswer;
-        correctMarks = _correctMarks;
-        Tags = _Tags;
+        if (!Question.equals(_Question)) {
+            Question = _Question;
+        }
+        if (!questionType.equals(_questionType)) {
+            questionType = _questionType;
+        }
+        if (!correctAnswer.equals(_correctAnswer)) {
+            correctAnswer = _correctAnswer;
+        }
+        if (correctMarks != _correctMarks) {
+            correctMarks = _correctMarks;
+        }
+        if (!Tags.equals(_Tags)) {
+            Tags = _Tags;
+        }
     }
 
     public UUID getQuestionUUID() {

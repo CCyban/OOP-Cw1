@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -101,7 +100,7 @@ public class QuestionDetailsController implements Initializable {
         // The Gathering is complete
 
 
-        // Question-type specific validation
+        // Question-type specific validation, am using switch statement here so new cases can easily be added whilst maintaining efficiency
         switch (questionTypeInput) {
             case MultiChoice:
                 // Storing a local copy of the question string as it will be modified
@@ -231,18 +230,15 @@ public class QuestionDetailsController implements Initializable {
 
     public void updateUIBasedOnNewQuestionType(QuestionType questionType) {
         switch (questionType) {
-            case Arithmetic:
+            case Arithmetic -> {
                 // Set PromptText values
                 labelQuestionHelpText.setText("Example: What is 2+2?");
                 labelAnswerHelpText.setText("Example: 4\nOnly numbers and decimals can be used in the answer due to the question type");
 
                 // Set TextFormatter
                 RegexTextFormatters.setNumbersOnlyTextFormatter(textAreaAnswerInput);
-
-                // End case
-                break;
-
-            case MultiChoice:
+            }
+            case MultiChoice -> {
                 // Set PromptText
                 labelQuestionHelpText.setText("Example: What is 2+2?    (1, Two, 4, Orange)\nThe choices are a part of the question and are in a pair of () with each choice separated by ,");
                 labelAnswerHelpText.setText("Example: 4");
@@ -251,28 +247,22 @@ public class QuestionDetailsController implements Initializable {
                 if (textAreaAnswerInput.getTextFormatter() != null) {
                     textAreaAnswerInput.setTextFormatter(null); // Overwrite the preexisting text-formatter
                 }
-
-                // End case
-                break;
-
-            default:
-                throw new IllegalArgumentException();
+            }
+            default -> throw new IllegalArgumentException();
         }
     }
 
     public String getContentText(int amountMarksInput, QuestionType questionTypeInput, String questionInput, String answerInput, List<String> tagsInput) {
-        String contentText = null;
+        String contentText;
 
         switch (questionTypeInput) {
-            case Arithmetic:
-                contentText =
-                        "Marks: " + amountMarksInput +
-                                "\nQuestion Type: " + questionTypeInput +
-                                "\nQuestion: " + questionInput +
-                                "\nAnswer: " + answerInput +
-                                "\nTags: " + tagsInput;
-                break;
-            case MultiChoice:   // Slightly more complicated since we have to extract a bit more information before showing the message (for this question type)
+            case Arithmetic -> contentText =
+                    "Marks: " + amountMarksInput +
+                            "\nQuestion Type: " + questionTypeInput +
+                            "\nQuestion: " + questionInput +
+                            "\nAnswer: " + answerInput +
+                            "\nTags: " + tagsInput;
+            case MultiChoice -> {   // Slightly more complicated since we have to extract a bit more information before showing the message (for this question type)
                 // Storing a local copy of the question string as it will be modified
                 String entireQuestion = questionInput;
 
@@ -281,10 +271,10 @@ public class QuestionDetailsController implements Initializable {
                 entireQuestion = entireQuestion.replace("(", "");   // Removes the '('
                 entireQuestion = entireQuestion.replace(")", "");   // Removes the ')'
 
+
                 // Get subsections
                 String initialQuestion = questionInput.substring(0, optionsIndex);  // Splits the entireQuestion into the initial question part
                 String questionOptions = entireQuestion.substring(optionsIndex);    // Splits the entireQuestion into the question options part
-
                 contentText =
                         "Marks: " + amountMarksInput +
                                 "\nQuestion Type: " + questionTypeInput +
@@ -292,9 +282,8 @@ public class QuestionDetailsController implements Initializable {
                                 "\nChoices: " + Arrays.asList(questionOptions.split("\\s*,\\s*")) +
                                 "\nAnswer: " + answerInput +
                                 "\nTags: " + tagsInput;
-                break;
-            default:
-                throw new IllegalArgumentException();
+            }
+            default -> throw new IllegalArgumentException();
         }
         return contentText;
     }
@@ -309,63 +298,56 @@ public class QuestionDetailsController implements Initializable {
 
 
         switch (questionDetailsPurpose) {
-            case Add:
-                confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
-                    if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
+            case Add -> confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
+                if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
 
-                        // Load the gathered inputs into the constructor
-                        Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-                        // Add the new constructed question to the list
-                        questionsObservableList.add(newQuestion);
+                    // Load the gathered inputs into the constructor
+                    Question newQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+                    // Add the new constructed question to the list
+                    questionsObservableList.add(newQuestion);
 
-                        new Alert(Alert.AlertType.CONFIRMATION, "The question is added to the question bank. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
-                            if (saveResponse == ButtonType.OK) {
-                                Banks.saveQuestionBank(true, true, questionsObservableList);
-                            }
-                        });
-                    } else {
-                        new Alert(Alert.AlertType.INFORMATION, "The question was not added.").show();
-                    }
-                });
-                break;
-            case Edit:
-                confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
-                    if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
+                    new Alert(Alert.AlertType.CONFIRMATION, "The question is added to the question bank. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
+                        if (saveResponse == ButtonType.OK) {
+                            Banks.saveQuestionBank(true, true, questionsObservableList);
+                        }
+                    });
+                } else {
+                    new Alert(Alert.AlertType.INFORMATION, "The question was not added.").show();
+                }
+            });
+            case Edit -> confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
+                if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
 
-                        // Update the question data with the newly edited values
-                        selectedQuestion.EditQuestion(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+                    // Update the question data with the newly edited values
+                    selectedQuestion.EditQuestion(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
 
-                        new Alert(Alert.AlertType.CONFIRMATION, "The question is edited. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
-                            if (saveResponse == ButtonType.OK) {
-                                Banks.saveQuestionBank(true, true, questionsObservableList);
-                            }
-                        });
-                    } else {
-                        new Alert(Alert.AlertType.INFORMATION, "The question was not edited.").show();
-                    }
-                });
-                break;
-            case Clone:
-                confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
-                    if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
+                    new Alert(Alert.AlertType.CONFIRMATION, "The question is edited. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
+                        if (saveResponse == ButtonType.OK) {
+                            Banks.saveQuestionBank(true, true, questionsObservableList);
+                        }
+                    });
+                } else {
+                    new Alert(Alert.AlertType.INFORMATION, "The question was not edited.").show();
+                }
+            });
+            case Clone -> confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
+                if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
 
-                        // Create the newly made clone of the question
-                        Question newClonedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
-                        // Add the new constructed cloned question into the list
-                        questionsObservableList.add(newClonedQuestion);
+                    // Create the newly made clone of the question
+                    Question newClonedQuestion = new Question(questionInput, questionTypeInput, answerInput, amountMarksInput, tagsInput);
+                    // Add the new constructed cloned question into the list
+                    questionsObservableList.add(newClonedQuestion);
 
-                        new Alert(Alert.AlertType.CONFIRMATION, "The question is cloned. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
-                            if (saveResponse == ButtonType.OK) {
-                                Banks.saveQuestionBank(true, true, questionsObservableList);
-                            }
-                        });
-                    } else {
-                        new Alert(Alert.AlertType.INFORMATION, "The question was not cloned.").show();
-                    }
-                });
-                break;
-            default:
-                throw new IllegalArgumentException();
+                    new Alert(Alert.AlertType.CONFIRMATION, "The question is cloned. Save the question bank now?").showAndWait().ifPresent(saveResponse -> {
+                        if (saveResponse == ButtonType.OK) {
+                            Banks.saveQuestionBank(true, true, questionsObservableList);
+                        }
+                    });
+                } else {
+                    new Alert(Alert.AlertType.INFORMATION, "The question was not cloned.").show();
+                }
+            });
+            default -> throw new IllegalArgumentException();
         }
     }
 }

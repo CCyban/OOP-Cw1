@@ -3,7 +3,6 @@ package Controllers.Tabs.DoTestManagement;
 import Classes.Banks;
 import Classes.Quiz.Result;
 import Classes.Quiz.Test;
-import Controllers.Tabs.DoTestManagement.DoTestDetailsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -109,7 +107,7 @@ public class ViewTestResultsController implements Initializable {
         DoTestDetailsController dialogController = fxmlLoader.getController();
 
         // Updating the stage & classes with key details depending on why the dialog is being used
-        stage.setTitle("Review Test Attempt");
+        stage.setTitle("Test Attempt");
 
         Result result = (Result) tableViewResults.getSelectionModel().getSelectedItem();
         UUID testUUID = result.getTestUUID();

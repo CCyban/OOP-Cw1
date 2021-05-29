@@ -223,7 +223,7 @@ public class TestDetailsController implements Initializable {
         textFieldTestQuestionsSearchInput.setText("");
         tableViewTestQuestions.getSelectionModel().clearSelection();
 
-        // Update total marks label TODO: Bind it
+        // Update total marks label
         labelTotalTestMarks.setText(String.valueOf(selectedTest.getTotalMarks()));
     }
 }

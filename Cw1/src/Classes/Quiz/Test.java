@@ -3,15 +3,13 @@ package Classes.Quiz;
 import Classes.Banks;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Test implements java.io.Serializable {
 
-    UUID testUUID;
-    String testTitle;
-    ArrayList<UUID> questionUUIDs;
+    private final UUID testUUID;
+    private String testTitle;
+    private ArrayList<UUID> questionUUIDs;
 
     public Test(String _testTitle, ArrayList<UUID> _questionUUIDs) {
         // Generate a UUID for the test
@@ -45,15 +43,15 @@ public class Test implements java.io.Serializable {
     }
 
     public List<Question> getQuestions() {
-        ObservableList testQuestionsObservableList = FXCollections.observableArrayList();
+            ObservableList<Question> testQuestionsObservableList = FXCollections.observableArrayList();
 
-        ObservableList questionBankObservableList = FXCollections.observableArrayList();
+        ObservableList<Question> questionBankObservableList = FXCollections.observableArrayList();
         Banks.loadQuestionBank(false, true, questionBankObservableList);
 
         for (UUID questionUUID: questionUUIDs) {
 
-            Question currentQuestion = (Question) questionBankObservableList.stream()
-                    .filter(question -> questionUUID.equals(((Question)question).getQuestionUUID()))
+            Question currentQuestion = questionBankObservableList.stream()
+                    .filter(question -> questionUUID.equals((question).getQuestionUUID()))
                     .findFirst()
                     .orElse(null);
 
@@ -63,15 +61,15 @@ public class Test implements java.io.Serializable {
     }
 
     public int getTotalMarks() {
-        ObservableList questionBankObservableList = FXCollections.observableArrayList();
+        ObservableList<Question> questionBankObservableList = FXCollections.observableArrayList();
         Banks.loadQuestionBank(false, true, questionBankObservableList);
 
         int totalMarks = 0;
 
         for (UUID questionUUID: questionUUIDs) {
 
-            Question currentQuestion = (Question) questionBankObservableList.stream()
-                    .filter(question -> questionUUID.equals(((Question)question).getQuestionUUID()))
+            Question currentQuestion = questionBankObservableList.stream()
+                    .filter(question -> questionUUID.equals((question).getQuestionUUID()))
                     .findFirst()
                     .orElse(null);
 

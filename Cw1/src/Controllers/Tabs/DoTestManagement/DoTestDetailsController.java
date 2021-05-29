@@ -45,8 +45,6 @@ public class DoTestDetailsController implements Initializable {
 
     private ArrayList<Object> givenAnswerControlsArrayList = new ArrayList<>();
 
-    private Result result;
-
     private DoTestDetailsPurpose doTestDetailsPurpose;
 
     public enum DoTestDetailsPurpose { Add, Edit };
@@ -235,18 +233,17 @@ public class DoTestDetailsController implements Initializable {
 
         // Alter some initial FXML details depending on the purpose of the visit
         switch (doTestDetailsPurpose) {
-            case Add:
+            case Add -> {
                 buttonFinishTest.setText("Finish Test");
                 labelTestMarksDescription.setText("Total Possible Marks:");
                 labelTestMarksValue.setText(String.valueOf(selectedTest.getTotalMarks()));
-                break;
-            case Edit:
-                buttonFinishTest.setText("Save Modifications");
+            }
+            case Edit -> {
+                buttonFinishTest.setText("Save Any Modifications");
                 labelTestMarksDescription.setText("Marks Gained:");
                 labelTestMarksValue.setText(selectedResult.getTotalMarksAchieved() + "/" + selectedTest.getTotalMarks());
-                break;
-            default:
-                throw new IllegalArgumentException();
+            }
+            default -> throw new IllegalArgumentException();
         }
     }
 }

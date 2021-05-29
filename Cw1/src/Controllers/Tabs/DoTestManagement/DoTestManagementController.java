@@ -1,12 +1,7 @@
 package Controllers.Tabs.DoTestManagement;
 
 import Classes.Banks;
-import Classes.Quiz.Answer;
-import Classes.Quiz.Question;
 import Classes.Quiz.Test;
-import Classes.Translating;
-import Controllers.Tabs.TestManagement.TestDetailsController;
-import Controllers.Tabs.TestManagement.TestManagementController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,12 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.function.Predicate;

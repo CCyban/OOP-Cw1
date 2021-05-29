@@ -3,14 +3,14 @@ package Classes.Quiz;
 import Classes.Banks;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class Result implements java.io.Serializable {
-    UUID resultUUID;
-    UUID testUUID;
-    ArrayList<Answer> resultData;
+
+    private final UUID resultUUID;
+    private final UUID testUUID;
+    private ArrayList<Answer> resultData;
 
     public Result(UUID _testUUID, ArrayList<Answer> _resultData) {
         // Generate a UUID for the result
@@ -30,11 +30,11 @@ public class Result implements java.io.Serializable {
     }
 
     public String getTestTitle() {
-        ObservableList testBankObservableList = FXCollections.observableArrayList();
+        ObservableList<Test> testBankObservableList = FXCollections.observableArrayList();
         Banks.loadTestBank(false, true, testBankObservableList);
 
-        String testTitle = ((Test) testBankObservableList.stream()
-                .filter(test -> testUUID.equals(((Test)test).getTestUUID()))
+        String testTitle = (testBankObservableList.stream()
+                .filter(test -> testUUID.equals((test).getTestUUID()))
                 .findFirst()
                 .orElse(null)).getTestTitle();
 
@@ -48,7 +48,7 @@ public class Result implements java.io.Serializable {
     public int getTotalMarksAchieved() {
         int totalMarksAchieved = 0;
         for (Answer answer: resultData) {
-            totalMarksAchieved += answer.marksAchieved;
+            totalMarksAchieved += answer.getMarksAchieved();
         }
         return totalMarksAchieved;
     }

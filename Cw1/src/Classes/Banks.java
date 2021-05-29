@@ -31,7 +31,7 @@ public class Banks {
         if (retrievedData != null) {    // If successful then replace the currently used data with the loaded data
             observableListToLoadInto.clear();
             observableListToLoadInto.addAll(retrievedData);
-        };
+        }
     }
 
     public static void saveTestBank(Boolean useDialogOnSuccess, Boolean useDialogOnFailure, ObservableList observableListToSave) {
