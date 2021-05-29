@@ -6,7 +6,6 @@ import Classes.Quiz.Answer;
 import Classes.Quiz.Question;
 import Classes.Quiz.Result;
 import Classes.Quiz.Test;
-import Controllers.Tabs.TestManagement.TestManagementController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;

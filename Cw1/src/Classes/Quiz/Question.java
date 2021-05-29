@@ -1,11 +1,10 @@
 package Classes.Quiz;
 
+import Enums.QuestionType;
 import java.util.List;
 import java.util.UUID;
 
 public class Question implements java.io.Serializable {
-    public enum QuestionType { Arithmetic, MultiChoice };
-
     UUID questionUUID;
     QuestionType questionType;
     String Question;

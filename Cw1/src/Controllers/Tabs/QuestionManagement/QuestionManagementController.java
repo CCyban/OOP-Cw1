@@ -63,7 +63,7 @@ public class QuestionManagementController implements Initializable {
         idCol.setPrefWidth(100);
 
         TableColumn typeCol = new TableColumn("Type");
-        typeCol.setCellValueFactory(new PropertyValueFactory<Question, Question.QuestionType>("questionType"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<Question, Enums.QuestionType>("questionType"));
 
         TableColumn correctMarksCol = new TableColumn("Possible Marks");
         correctMarksCol.setCellValueFactory(new PropertyValueFactory<Question, Integer>("correctMarks"));

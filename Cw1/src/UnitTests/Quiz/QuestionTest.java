@@ -1,7 +1,7 @@
 package UnitTests.Quiz;
 
 import Classes.Quiz.Question;
-import Classes.Quiz.Question.QuestionType;
+import Enums.QuestionType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -3,6 +3,7 @@ package Controllers.Tabs.QuestionManagement;
 import Classes.Banks;
 import Classes.RegexTextFormatters;
 import Classes.Quiz.Question;
+import Enums.QuestionType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,9 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import static Classes.Quiz.Question.QuestionType;
-import static Classes.Quiz.Question.QuestionType.Arithmetic;
-import static Classes.Quiz.Question.QuestionType.MultiChoice;
+import static Enums.QuestionType.*;
 
 public class QuestionDetailsController implements Initializable {
 

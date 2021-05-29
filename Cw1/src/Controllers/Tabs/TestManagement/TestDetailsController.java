@@ -139,7 +139,7 @@ public class TestDetailsController implements Initializable {
         idCol.setPrefWidth(100);
 
         TableColumn typeCol = new TableColumn("Type");
-        typeCol.setCellValueFactory(new PropertyValueFactory<Question, Question.QuestionType>("questionType"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<Question, Enums.QuestionType>("questionType"));
 
         TableColumn correctMarksCol = new TableColumn("Possible Marks");
         correctMarksCol.setCellValueFactory(new PropertyValueFactory<Question, Integer>("CorrectMarks"));
@@ -167,7 +167,7 @@ public class TestDetailsController implements Initializable {
         idColQuestionBank.setPrefWidth(100);
 
         TableColumn typeColQuestionBank = new TableColumn("Type");
-        typeColQuestionBank.setCellValueFactory(new PropertyValueFactory<Question, Question.QuestionType>("questionType"));
+        typeColQuestionBank.setCellValueFactory(new PropertyValueFactory<Question, Enums.QuestionType>("questionType"));
 
         TableColumn correctMarksColQuestionBank = new TableColumn("Possible Marks");
         correctMarksColQuestionBank.setCellValueFactory(new PropertyValueFactory<Question, Integer>("CorrectMarks"));
