@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.*;
 import java.util.function.Predicate;
@@ -95,8 +94,8 @@ public class TestDetailsController implements Initializable {
 
         // The Gathering is complete
 
-        // Use gathered data to finalise the finish-test procedure
-        selectedTest.setTestTitle(testTitleInput);
+        // Do the assigned action with confirmation dialogs
+        doActionWithConfirmation(testTitleInput);
 
         // Closes this dialog now that the test is fully added/edited
         ((Stage)((Node)(event.getSource())).getScene().getWindow()).close();
@@ -193,7 +192,7 @@ public class TestDetailsController implements Initializable {
     public void onAddToTestClick(ActionEvent event) {
         // Adds the question to the test
         selectedTest.addQuestion(((Question) tableViewQuestionBank.getSelectionModel().getSelectedItem()).getQuestionUUID());
-        // Refreshes data/table TODO FOR Cw2: Make it automatic
+        // Refreshes data/table
         testQuestionsObservableList = FXCollections.observableArrayList(selectedTest.getQuestions());
         tableViewTestQuestions.setItems(FXCollections.observableArrayList(selectedTest.getQuestions()));
 
@@ -201,7 +200,7 @@ public class TestDetailsController implements Initializable {
         textFieldTestQuestionsSearchInput.setText("");
         tableViewTestQuestions.getSelectionModel().clearSelection();
 
-        // Update total marks label TODO: Bind it
+        // Update total marks label
         labelTotalTestMarks.setText(String.valueOf(selectedTest.getTotalMarks()));
     }
 
@@ -215,7 +214,7 @@ public class TestDetailsController implements Initializable {
 
         // Removes the question from the test
         selectedTest.removeQuestion(((Question) tableViewTestQuestions.getSelectionModel().getSelectedItem()).getQuestionUUID());
-        // Refreshes data/table TODO FOR Cw2: Make it automatic
+        // Refreshes data/table
         testQuestionsObservableList = FXCollections.observableArrayList(selectedTest.getQuestions());
         tableViewTestQuestions.setItems(FXCollections.observableArrayList(selectedTest.getQuestions()));
 
@@ -225,5 +224,46 @@ public class TestDetailsController implements Initializable {
 
         // Update total marks label
         labelTotalTestMarks.setText(String.valueOf(selectedTest.getTotalMarks()));
+    }
+
+    // 'Action' meaning the value in the testDetailsPurpose enum
+    public void doActionWithConfirmation(String testTitleInput) {
+        // Ask user if they are sure of their inputs
+        Dialog<ButtonType> confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationDialog.setTitle("Confirmation");
+        confirmationDialog.setHeaderText("Are you sure?");
+
+
+        switch (testDetailsPurpose) {
+            case Add -> confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
+                if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
+
+                    selectedTest.setTestTitle(testTitleInput);
+
+                    new Alert(Alert.AlertType.CONFIRMATION, "The test is added to the test bank. Save the test bank now?").showAndWait().ifPresent(saveResponse -> {
+                        if (saveResponse == ButtonType.OK) {
+                            Banks.saveTestBank(true, true, testObservableList);
+                        }
+                    });
+                } else {
+                    new Alert(Alert.AlertType.INFORMATION, "The test was not added.").show();
+                }
+            });
+            case Edit -> confirmationDialog.showAndWait().ifPresent(confirmationResponse -> {
+                if (confirmationResponse == ButtonType.OK) {    // If the user said they are OK with their inputs
+
+                    selectedTest.setTestTitle(testTitleInput);
+
+                    new Alert(Alert.AlertType.CONFIRMATION, "The test is edited. Save the test bank now?").showAndWait().ifPresent(saveResponse -> {
+                        if (saveResponse == ButtonType.OK) {
+                            Banks.saveTestBank(true, true, testObservableList);
+                        }
+                    });
+                } else {
+                    new Alert(Alert.AlertType.INFORMATION, "The test was not edited.").show();
+                }
+            });
+            default -> throw new IllegalArgumentException();
+        }
     }
 }
