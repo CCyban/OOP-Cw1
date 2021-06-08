@@ -1,5 +1,7 @@
 # OOP-Cw1
 
+IMPORTANT: If you cannot see the images, you might want to read the README off the GitHub repository - https://github.com/CCyban/OOP-Cw1
+
 ## Contents
 1. [Description](#Description)
 2. [Starting](#Starting)
